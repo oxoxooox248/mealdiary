@@ -5,11 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MealSelVo {
-    private int imeal;
+public class MealUpdDto {
     private String title;
+    private String ingredient;
+    private String recipe;
     private String review;
-    private String createdAt;
     private List<String> pics;
     private List<String> tags;
 }
