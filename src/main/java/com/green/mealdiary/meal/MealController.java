@@ -25,7 +25,7 @@ public class MealController {
     }
 
     @PostMapping("/search")
-    @Operation(summary = "일지 검색", description = "일지 검색 처리<br>(search: 검색내용)")
+    @Operation(summary = "일지 검색", description = "일지 검색 처리<br>(search: 검색내용)<br>(result(0): 실패, (1): 성공)")
     public List<MealSelVo> searchMeal(String search){
         return null;
     }
@@ -55,22 +55,23 @@ public class MealController {
     }
 
     @PutMapping
-    @Operation(summary = "일지 수정", description = "???")
+    @Operation(summary = "일지 수정", description = "일지 수정 처리<br>(title: 제목(음식 이름), ingredient: 재료, " +
+            "recipe: 레시피, review: 후기, pics: 사진, tags: 태그)<br>(result(0): 실패, (1): 성공)")
     public ResVo updMeal(@RequestBody MealUpdDto dto) { return null;}
 
     @DeleteMapping
-    @Operation(summary = "일지 삭제", description = "???")
+    @Operation(summary = "일지 삭제", description = "일지 삭제 처리<br>(imeal: 일지pk)<br>(result(0): 실패, (1): 성공)")
     public ResVo delMeal(int imeal) { return null;}
 
     @DeleteMapping("/pic")
-    @Operation(summary = "일지 사진 삭제", description = "???")
+    @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리<br>(ipic: 사진pk)<br>(result(0): 실패, (1): 성공)")
     public ResVo delMealPic(int ipic) {return null;}
 
     @GetMapping("/toggle")
-    @Operation(summary = "북마크 표시/해제", description = "???")
+    @Operation(summary = "북마크 표시/해제", description = "북마크 on/off 토글로 처리(imeal: 일지pk)<br>(result(0): 취소, (1): 표시)")
     public ResVo toggleBookmark(int imeal) {return null;}
 
     @DeleteMapping("/tag")
-    @Operation(summary = "일지 태그 삭제", description = "???")
+    @Operation(summary = "일지 태그 삭제", description = "일지 태그 삭제 처리<br>(itag: 태그pk)<br>(result(0): 실패, (1): 성공)")
     public ResVo delMealTag(int itag) {return null;}
 }
