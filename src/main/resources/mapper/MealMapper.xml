@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.mealdiary.meal.MealMapper">
+    <insert id="insMeal" useGeneratedKeys="true" keyProperty="imeal">
+        insert into t_meal set
+        iuser= #{iuser}, title=#{title}, ingredient=#{ingredient},
+        recipe= #{recipe}, review= #{review}
+    </insert>
+    <insert id="insMealPic">
+        insert into t_meal_pic
+        (imeal, pic) values
+        <foreach collection="pics" item="pic" separator=",">
+            (#{imeal}, #{pic})
+        </foreach>
+    </insert>
+    <insert id="insMealTag">
+        insert into t_meal_tag
+        (imeal, tag) values
+        <foreach collection="tags" item="tag" separator=",">
+            (#{imeal}, #{tag})
+        </foreach>
+    </insert>
+
+    <select id="searchMeal">
+        select * from t_meal a
+        <choose>
+            <when test="searchText==#">
+                join t_meal_tag b on a.imeal= b.imeal
+                where tag like "%#{search2}%"
+            </when>
+            <otherwise>
+                where title like "%#{search2}%"
+            </otherwise>
+        </choose>
+    </select>
+</mapper>
