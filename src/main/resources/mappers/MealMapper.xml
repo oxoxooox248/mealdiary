@@ -24,32 +24,9 @@
     <select id="selMeal">
         select a.imeal, a.title, a.review,
         a.created_at as createdAt from t_meal a
-        <choose>
-            <when test="bookmark==1">
-                <choose>
-                    <when test="searchText==#">
-                        join t_meal_tag b on a.imeal= b.imeal
-                        where tag like "%#{search2}%"
-                        and bookmark= #{bookmark}
-                    </when>
-                    <otherwise>
-                        where title like "%#{search}%"
-                        and bookmark= #{bookmark}
-                    </otherwise>
-                </choose>
-            </when>
-            <otherwise>
-                <choose>
-                    <when test="searchText==#">
-                        join t_meal_tag b on a.imeal= b.imeal
-                        where tag like "%#{search2}%"<!--#search2-->
-                    </when>
-                    <otherwise>
-                        where title like "%#{search}%"
-                    </otherwise>
-                </choose>
-            </otherwise>
-        </choose>
+        <if test="bookmark==1">
+            where a.bookmark=1
+        </if>
         order by a.imeal desc
         limit #{startIdx}, #{rowCount}
     </select>

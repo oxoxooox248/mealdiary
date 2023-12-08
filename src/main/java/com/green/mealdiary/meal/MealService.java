@@ -3,13 +3,14 @@ package com.green.mealdiary.meal;
 import com.green.mealdiary.common.*;
 import com.green.mealdiary.meal.model.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MealService{
@@ -23,6 +24,8 @@ public class MealService{
         return new ResVo(Const.SUCCESS);
     }
     public List<MealSelVo> getMeal(MealSelDto dto){
+        log.info("dto: {}",dto);
+
         List<MealSelVo> mealList= mapper.selMeal(dto);
         List<Integer> imealList= new ArrayList();
         Map<Integer, MealSelVo> mealMap= new HashMap();

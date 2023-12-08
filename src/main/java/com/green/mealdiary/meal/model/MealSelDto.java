@@ -19,16 +19,15 @@ public class MealSelDto {
     private String search;
     @JsonIgnore
     private String searchText;
-    @JsonIgnore
-    private String search2;
+
     public void setPage(int page){
         this.startIdx= (page-1)*rowCount;
     }
     public void setSearch(String search){
         this.searchText=search.substring(0,1);
         if(this.searchText.equals("#")){
-            this.search2= search.substring(1);
-        }
+            this.search= search.substring(1);
+        }else{this.search= search;}
     }
 
 }
