@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface MealMapper {
     int insMeal(MealInsDto dto);
-    int insMealPic(MealInsDto dto);
-    int insMealTag(MealInsDto dto);
+    int insMealPics(MealInsDto dto);
+    int insMealTags(MealInsDto dto);
     List<MealSelVo> selMeal(MealSelDto dto);
     List<MealPicSelVo> selMealPicByImealList(List<Integer> imealList);
     List<MealTagSelVo> selMealTagByImealList(List<Integer> imealList);
@@ -27,4 +27,6 @@ public interface MealMapper {
     int updMeal(MealUpdDto dto);
     int updMealPic(MealPicUpdDto dto);
     int updMealTag(MealTagUpdDto dto);
+    int insMealPic(MealPicInsDto dto);
+    int insMealTag(MealTagInsDto dto);
 }

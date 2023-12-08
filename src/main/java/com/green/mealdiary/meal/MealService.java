@@ -18,8 +18,8 @@ public class MealService{
 
     public ResVo postMeal(MealInsDto dto){
         mapper.insMeal(dto);
-        mapper.insMealPic(dto);
-        mapper.insMealTag(dto);
+        mapper.insMealPics(dto);
+        mapper.insMealTags(dto);
         return new ResVo(Const.SUCCESS);
     }
     public List<MealSelVo> getMeal(MealSelDto dto){
@@ -83,6 +83,12 @@ public class MealService{
     }
     public ResVo updMealTag(MealTagUpdDto dto){
         return new ResVo(mapper.updMealTag(dto));
+    }
+    public ResVo postMealPic(MealPicInsDto dto){
+        return new ResVo(mapper.insMealPic(dto));
+    }
+    public ResVo postMealTag(MealTagInsDto dto){
+        return new ResVo(mapper.insMealTag(dto));
     }
 
 }

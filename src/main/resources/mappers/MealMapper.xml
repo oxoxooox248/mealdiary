@@ -7,14 +7,14 @@
         iuser= #{iuser}, title=#{title}, ingredient=#{ingredient},
         recipe= #{recipe}, review= #{review}
     </insert>
-    <insert id="insMealPic">
+    <insert id="insMealPics">
         insert into t_meal_pic
         (imeal, pic) values
         <foreach collection="pics" item="pic" separator=",">
             (#{imeal}, #{pic})
         </foreach>
     </insert>
-    <insert id="insMealTag">
+    <insert id="insMealTags">
         insert into t_meal_tag
         (imeal, tag) values
         <foreach collection="tags" item="tag" separator=",">
@@ -129,4 +129,12 @@
         set tag= #{tag}
         where itag= #{itag}
     </update>
+    <insert id="insMealPic">
+        insert into t_meal_pic set
+        imeal= #{imeal}, pic= #{pic}
+    </insert>
+    <insert id="insMealTag">
+        insert into t_meal_tag set
+        imeal= #{imeal}, tag= #{tag}
+    </insert>
 </mapper>
