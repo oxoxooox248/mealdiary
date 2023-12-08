@@ -31,27 +31,20 @@ public class MealController {
     }
 
     @GetMapping
-    @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>(page: 페이지)")
-    public List<MealSelVo> getMeal(int page){
-        return null;
+    @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>(page: 페이지,row_count: 페이지 당 일지 갯수, bookmark: 북마크 여부(0:없음, 1:있음))")
+    public List<MealSelVo> getMeal(int page, @RequestParam(name = "row_count", defaultValue = "4") int rowCount,
+                                   @RequestParam(defaultValue = "0") int bookmark){
+        MealSelDto dto= new MealSelDto();
+        dto.setRowCount(rowCount);
+        dto.setPage(page);
+        dto.setBookmark(bookmark);
+        return service.getMeal(dto);
     }
 
-    @GetMapping("/one")
-    @Operation(summary ="페이징 처리", description = "메인 화면과 다른 페이징 처리<br>(page: 페이지)")
-    public List<MealSelVo> getMeal2(int page){
-        return null;
-    }
-
-    @GetMapping("/bookmark")
-    @Operation(summary ="책갈피 검색", description = "책갈피를 등록해놓은 일지 검색")
-    public List<MealSelVo> getMealByBookMark(){
-        return null;
-    }
-
-    @GetMapping("/more")
+    @GetMapping("/{imeal}")
     @Operation(summary ="일지의 상세 정보 페이지", description = "일지 클릭 시 나오는 상세 페이지 처리<br>(imeal: 일지 pk)")
-    public MealSelDetailVo getMealMore(int imeal){
-        return null;
+    public MealSelDetailVo getDetail(@PathVariable int imeal){
+        return service.getDetail(imeal);
     }
 
     @PutMapping
@@ -67,9 +60,9 @@ public class MealController {
     @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리<br>(ipic: 사진pk)<br>(result(0): 실패, (1): 성공)")
     public ResVo delMealPic(int ipic) {return null;}
 
-    @GetMapping("/toggle")
-    @Operation(summary = "북마크 표시/해제", description = "북마크 on/off 토글로 처리(imeal: 일지pk)<br>(result(0): 취소, (1): 표시)")
-    public ResVo toggleBookmark(int imeal) {return null;}
+    @PostMapping("/bookmark")
+    @Operation(summary = "책갈피 표시/해제", description = "북마크 on/off 토글로 처리(imeal: 일지pk)<br>(result(0): 취소, (1): 표시)")
+    public ResVo toggleBookmark(int imeal) {return service.toggleBookmark(imeal);}
 
     @DeleteMapping("/tag")
     @Operation(summary = "일지 태그 삭제", description = "일지 태그 삭제 처리<br>(itag: 태그pk)<br>(result(0): 실패, (1): 성공)")

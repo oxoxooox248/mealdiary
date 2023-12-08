@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.mealdiary.meal.MealMapper">
+    <insert id="insMeal" useGeneratedKeys="true" keyProperty="imeal">
+        insert into t_meal set
+        iuser= #{iuser}, title=#{title}, ingredient=#{ingredient},
+        recipe= #{recipe}, review= #{review}
+    </insert>
+    <insert id="insMealPic">
+        insert into t_meal_pic
+        (imeal, pic) values
+        <foreach collection="pics" item="pic" separator=",">
+            (#{imeal}, #{pic})
+        </foreach>
+    </insert>
+    <insert id="insMealTag">
+        insert into t_meal_tag
+        (imeal, tag) values
+        <foreach collection="tags" item="tag" separator=",">
+            (#{imeal}, #{tag})
+        </foreach>
+    </insert>
+    <select id="selMeal">
+        select imeal, title, review,
+        created_at as createdAt from t_meal
+        <if test="bookmark==1">
+            where bookmark= 1
+        </if>
+        order by imeal desc
+        limit #{startIdx}, #{rowCount}
+    </select>
+    <select id="selMealPicByImealList">
+        select imeal, pic from t_meal_pic
+        where imeal in
+        <foreach collection="imealList" item="imeal" open="(" close=")" separator=",">
+            #{imeal}
+        </foreach>
+    </select>
+    <select id="selMealTagByImealList">
+        select imeal, tag
+        from t_meal_tag
+        where imeal in
+        <foreach collection="imealList" item="imeal" open="(" close=")" separator=", ">
+            #{imeal}
+        </foreach>
+    </select>
+    <select id="selMealPics">
+        select pic from t_meal_pic
+        where imeal= #{imeal}
+    </select>
+    <select id="selMealTags">
+        select tag from t_meal_tag
+        where imeal= #{imeal}
+    </select>
+    <select id="selDetail">
+        select imeal, title, ingredient, recipe,
+        review, bookmark, created_at as createdAt from t_meal
+        where imeal= #{imeal}
+    </select>
+    <select id="searchMeal">
+        select imeal, title, review,
+        created_at as createdAt from t_meal a
+        <choose>
+            <when test="searchText==#">
+                join t_meal_tag b on a.imeal= b.imeal
+                where tag like "%#{search2}%"
+            </when>
+            <otherwise>
+                where title like "%#{search2}%"
+            </otherwise>
+        </choose>
+    </select>
+    <delete id="delMeal">
+        delete from t_meal
+        where imeal= #{imeal}
+    </delete>
+    <delete id="delMealPicByImeal">
+        delete from t_meal
+        where imeal= #{imeal}
+    </delete>
+    <delete id="delMealTagByImeal">
+        delete from t_meal
+        where imeal= #{imeal}
+    </delete>
+    <update id="bookmarkOn">
+        update t_meal set
+        bookmark= 1
+        where imeal= #{imeal}
+    </update>
+    <update id="bookmarkOff">
+        update t_meal set
+        bookmark= 0
+        where imeal= #{imeal}
+    </update>
+    <update id="selBookmark">
+        select bookmark from t_meal
+        where imeal= #{imeal}
+    </update>
+</mapper>
