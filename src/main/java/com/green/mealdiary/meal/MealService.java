@@ -65,29 +65,24 @@ public class MealService{
         return new ResVo(mapper.delMealPic(ipic));
     }
     public ResVo delMealTag(int itag){
-        return mapper.delMealTag(itag);
+        return new ResVo(mapper.delMealTag(itag));
     }
     public ResVo delMeal(int imeal){
         mapper.delMealPicByImeal(imeal);
         mapper.delMealTagByImeal(imeal);
         mapper.delMeal(imeal);
+        return new ResVo(1);
     }
     public ResVo putMeal(MealUpdDto dto){
         mapper.updMeal(dto);
-        List<Integer> ipicList= mapper.selMealPic(dto.getImeal());
-        for(int i=0; i<dto.getPics().size(); i++){
-            MealPicUpdDto uDto= new MealPicUpdDto();
-            uDto.setPic(dto.getPics().get(i));
-            uDto.setIpic(ipicList.get(i));
-            mapper.updMealPic(uDto);
-        }
-        for(int i=0; i<dto.getTags().size(); i++){
-            MealTagUpdDto uDto= new MealTagUpdDto();
-            uDto.setTag(dto.getTags().get(i));
-            uDto.setITag(itagList.get(i));
-            mapper.updMealTag(uDto);
-        }
+
         return new ResVo(1);
+    }
+    public ResVo updMealPic(MealPicUpdDto dto){
+        return new ResVo(mapper.updMealPic(dto));
+    }
+    public ResVo updMealTag(MealTagUpdDto dto){
+        return new ResVo(mapper.updMealTag(dto));
     }
 
 }

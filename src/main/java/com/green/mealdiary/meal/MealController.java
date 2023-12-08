@@ -67,4 +67,12 @@ public class MealController {
     @DeleteMapping("/tag")
     @Operation(summary = "일지 태그 삭제", description = "일지 태그 삭제 처리<br>(itag: 태그pk)<br>(result(0): 실패, (1): 성공)")
     public ResVo delMealTag(int itag) {return service.delMealTag(itag);}
+    @PatchMapping("/pic")
+    public ResVo updMealPic(@RequestBody MealPicUpdDto dto){
+        return service.updMealPic(dto);
+    }
+    @PatchMapping("/tag")
+    public ResVo updMealTag(@RequestBody MealTagUpdDto dto){
+        return service.updMealTag(dto);
+    }
 }

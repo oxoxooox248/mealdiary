@@ -115,6 +115,10 @@
         select ipic from t_meal_pic
         where imeal= #{imeal}
     </select>
+    <select id="selMealTag">
+        select itag from t_meal_tag
+        where imeal= #{imeal}
+    </select>
     <update id="updMealPic">
         update t_meal_pic
         set pic= #{pic}
