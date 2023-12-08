@@ -41,13 +41,8 @@ public class MealController {
     }
 
     @GetMapping
-    @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>(page: 페이지,row_count: 페이지 당 일지 갯수, bookmark: 북마크 여부(0:없음, 1:있음))")
-    public List<MealSelVo> getMealList(int page, @RequestParam(name = "row_count", defaultValue = "4") int rowCount,
-                                   @RequestParam(defaultValue = "0") int bookmark){
-        MealSelDto dto= new MealSelDto();
-        dto.setRowCount(rowCount);
-        dto.setPage(page);
-        dto.setBookmark(bookmark);
+    @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>(page: 페이지,rowCount: 페이지 당 일지 갯수, bookmark: 북마크 여부(0:없음, 1:있음), search: 검색어(제목, 태그))")
+    public List<MealSelVo> getMealList(MealSelDto dto){
         return service.getMeal(dto);
     }
 

@@ -9,8 +9,8 @@ import java.util.List;
 public class MealInsDto {
     @JsonIgnore
     private int imeal;
-    @Schema(name = "유저 pk", hidden = true, required = false, defaultValue = "1")
-    private int iuser;
+    @JsonIgnore
+    private int iuser= 1;
     private String title;
     private String ingredient;
     private String recipe;
