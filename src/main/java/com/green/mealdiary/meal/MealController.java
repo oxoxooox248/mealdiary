@@ -50,7 +50,7 @@ public class MealController {
     @PutMapping
     @Operation(summary = "일지 수정", description = "일지 수정 처리<br>(title: 제목(음식 이름), ingredient: 재료, " +
             "recipe: 레시피, review: 후기, pics: 사진, tags: 태그)<br>(result(0): 실패, (1): 성공)")
-    public ResVo updMeal(@RequestBody MealUpdDto dto) { return null;}
+    public ResVo putMeal(@RequestBody MealUpdDto dto) { return service.putMeal(dto);}
 
     @DeleteMapping
     @Operation(summary = "일지 삭제", description = "일지 삭제 처리<br>(imeal: 일지pk)<br>(result(0): 실패, (1): 성공)")
@@ -58,7 +58,7 @@ public class MealController {
 
     @DeleteMapping("/pic")
     @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리<br>(ipic: 사진pk)<br>(result(0): 실패, (1): 성공)")
-    public ResVo delMealPic(int ipic) {return null;}
+    public ResVo delMealPic(int ipic) {return service.delMealPic(ipic);}
 
     @PostMapping("/bookmark")
     @Operation(summary = "책갈피 표시/해제", description = "북마크 on/off 토글로 처리(imeal: 일지pk)<br>(result(0): 취소, (1): 표시)")
@@ -66,5 +66,5 @@ public class MealController {
 
     @DeleteMapping("/tag")
     @Operation(summary = "일지 태그 삭제", description = "일지 태그 삭제 처리<br>(itag: 태그pk)<br>(result(0): 실패, (1): 성공)")
-    public ResVo delMealTag(int itag) {return null;}
+    public ResVo delMealTag(int itag) {return service.delMealTag(itag);}
 }

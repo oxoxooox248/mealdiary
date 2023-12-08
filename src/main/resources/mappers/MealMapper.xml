@@ -93,8 +93,36 @@
         bookmark= 0
         where imeal= #{imeal}
     </update>
-    <update id="selBookmark">
+    <select id="selBookmark" >
         select bookmark from t_meal
         where imeal= #{imeal}
+    </select>
+    <delete id="delMealPic">
+        delete from t_meal_pic
+        where ipic= #{ipic}
+    </delete>
+    <delete id="delMealTag">
+        delete from t_meal_tag
+        where itag= #{itag}
+    </delete>
+    <update id="updMeal">
+        update t_meal set
+        title= #{title}, ingredient=#{ingredient},
+        recipe= #{recipe}, review= #{review}
+        where imeal= #{imeal}
+    </update>
+    <select id="selMealPic">
+        select ipic from t_meal_pic
+        where imeal= #{imeal}
+    </select>
+    <update id="updMealPic">
+        update t_meal_pic
+        set pic= #{pic}
+        where ipic= #{ipic}
+    </update>
+    <update id="updMealTag">
+        update t_meal_tag
+        set tag= #{tag}
+        where itag= #{itag}
     </update>
 </mapper>

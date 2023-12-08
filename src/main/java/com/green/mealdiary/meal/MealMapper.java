@@ -22,5 +22,9 @@ public interface MealMapper {
     int selBookmark(int imeal);
     int bookmarkOn(int imeal);
     int bookmarkOff(int imeal);
-
+    int delMealPic(int ipic);
+    int delMealTag(int itag);
+    int updMeal(MealUpdDto dto);
+    int updMealPic(MealPicUpdDto dto);
+    int updMealTag(MealTagUpdDto dto);
 }

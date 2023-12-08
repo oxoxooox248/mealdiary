@@ -61,5 +61,33 @@ public class MealService{
             return new ResVo(0);
         }
     }
+    public ResVo delMealPic(int ipic){
+        return new ResVo(mapper.delMealPic(ipic));
+    }
+    public ResVo delMealTag(int itag){
+        return mapper.delMealTag(itag);
+    }
+    public ResVo delMeal(int imeal){
+        mapper.delMealPicByImeal(imeal);
+        mapper.delMealTagByImeal(imeal);
+        mapper.delMeal(imeal);
+    }
+    public ResVo putMeal(MealUpdDto dto){
+        mapper.updMeal(dto);
+        List<Integer> ipicList= mapper.selMealPic(dto.getImeal());
+        for(int i=0; i<dto.getPics().size(); i++){
+            MealPicUpdDto uDto= new MealPicUpdDto();
+            uDto.setPic(dto.getPics().get(i));
+            uDto.setIpic(ipicList.get(i));
+            mapper.updMealPic(uDto);
+        }
+        for(int i=0; i<dto.getTags().size(); i++){
+            MealTagUpdDto uDto= new MealTagUpdDto();
+            uDto.setTag(dto.getTags().get(i));
+            uDto.setITag(itagList.get(i));
+            mapper.updMealTag(uDto);
+        }
+        return new ResVo(1);
+    }
 
 }
