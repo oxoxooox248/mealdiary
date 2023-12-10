@@ -25,11 +25,6 @@ public class MealController {
         return service.postMeal(dto);
     }
 
-    @PostMapping("/search")
-    @Operation(summary = "일지 검색", description = "일지 검색 처리<br>(search: 검색내용)<br>(result(0): 실패, (1): 성공)")
-    public List<MealSelVo> searchMeal(String search){
-        return null;
-    }
     @PostMapping("/pic")
     @Operation(summary = "일지 사진 추가", description = "일지 사진 추가 처리<br>(imeal: 일지pk, pic:추가할 사진)<br>(result(0): 실패, (1): 성공)")
     public ResVo postMealPic(@RequestBody MealPicInsDto dto){
@@ -43,12 +38,7 @@ public class MealController {
 
     @GetMapping
     @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>(page: 페이지,rowCount: 페이지 당 일지 갯수, bookmark: 북마크 여부(0:없음, 1:있음), search: 검색어(제목, 태그))")
-    public List<MealSelVo> getMealList(int page, @RequestParam(required = false, defaultValue = "4") int rowCount,
-                                       @RequestParam(required = false, defaultValue = "0") int bookmark){
-        MealSelDto dto= new MealSelDto();
-        dto.setPage(page);
-        dto.setRowCount(rowCount);
-        dto.setBookmark(bookmark);
+    public List<MealSelVo> getMealList(@RequestBody MealSelDto dto){
         log.info("dto: {}",dto);
         return service.getMeal(dto);
     }

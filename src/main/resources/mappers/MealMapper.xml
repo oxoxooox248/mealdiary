@@ -24,14 +24,34 @@
     <select id="selMeal">
         select a.imeal, a.title, a.review,
         a.created_at as createdAt from t_meal a
-        <if test="bookmark==1">
-            where a.bookmark=1
+        <if test="search2!=null">
+        <choose>
+            <when test="searchText!=null">
+                join t_meal_tag b
+                on a.imeal= b.imeal
+                where b.tag like #{search2}
+                <if test="bookmark==1">
+                    and a.bookmark= 1
+                </if>
+            </when>
+            <otherwise>
+                where a.title like #{search2}
+                <if test="bookmark==1">
+                    and a.bookmark= 1
+                </if>
+            </otherwise>
+        </choose>
         </if>
+        <if test= "bookmark==1 and search2==null">
+            where a.bookmark= 1
+        </if>
+        group by a.imeal
         order by a.imeal desc
         limit #{startIdx}, #{rowCount}
     </select>
     <select id="selMealPicByImealList">
-        select imeal, pic from t_meal_pic
+        select imeal, pic
+        from t_meal_pic
         where imeal in
         <foreach collection="imealList" item="imeal" open="(" close=")" separator=",">
             #{imeal}
@@ -41,7 +61,7 @@
         select imeal, tag
         from t_meal_tag
         where imeal in
-        <foreach collection="imealList" item="imeal" open="(" close=")" separator=", ">
+        <foreach collection="imealList" item="imeal" open="(" close=")" separator=",">
             #{imeal}
         </foreach>
     </select>
