@@ -39,7 +39,6 @@ public class MealController {
     @GetMapping
     @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>(page: 페이지,rowCount: 페이지 당 일지 갯수, bookmark: 북마크 여부(0:없음, 1:있음), search: 검색어(제목, 태그))")
     public List<MealSelVo> getMealList(@RequestBody MealSelDto dto){
-        log.info("dto: {}",dto);
         return service.getMeal(dto);
     }
 
@@ -51,12 +50,12 @@ public class MealController {
 
     @PutMapping
     @Operation(summary = "일지 수정", description = "일지 수정 처리<br>(title: 제목(음식 이름), ingredient: 재료, " +
-            "recipe: 레시피, review: 후기, pics: 사진, tags: 태그)<br>(result(0): 실패, (1): 성공)")
+            "recipe: 레시피, review: 후기)<br>(result(0): 실패, (1): 성공)")
     public ResVo putMeal(@RequestBody MealUpdDto dto) { return service.putMeal(dto);}
 
     @DeleteMapping
     @Operation(summary = "일지 삭제", description = "일지 삭제 처리<br>(imeal: 일지pk)<br>(result(0): 실패, (1): 성공)")
-    public ResVo delMeal(int imeal) { return null;}
+    public ResVo delMeal(int imeal) { return service.delMeal(imeal);}
 
     @DeleteMapping("/pic")
     @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리<br>(ipic: 사진pk)<br>(result(0): 실패, (1): 성공)")
