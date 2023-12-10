@@ -18,7 +18,9 @@ public class MealController {
     private final MealService service;
 
     @GetMapping
-    @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>(page: 페이지,rowCount: 페이지 당 일지 갯수, bookmark: 북마크 여부(0:없음, 1:있음), search: 검색어(제목, 태그))")
+    @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>" +
+            "(page: 페이지,rowCount: 페이지 당 일지 갯수, bookmark: 북마크 여부(0:모든 일지, 1:북마크 있는 일지만)," +
+            "search: 검색어(제목, 태그))<br>(첫 화면에서 북마크와 검색어는 안 보내셔도 되고 북마크 클릭하거나 검색 시 보내지게 하면 될 것 같아요.)")
     public List<MealSelVo> getMealList(@RequestBody MealSelDto dto){
         return service.getMeal(dto);
     }
