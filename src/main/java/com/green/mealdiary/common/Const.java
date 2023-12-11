@@ -1,6 +1,7 @@
 package com.green.mealdiary.common;
 
 public class Const {
+    public static final int ZERO= 0;
     public static final int FAIL= -1;
     public static final int SUCCESS= 1;
     public static final int BOOKMARK_ON= 1;

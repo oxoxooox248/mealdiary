@@ -32,10 +32,7 @@ public class MealService{
         if(imealList.size()>0){
             List<MealPicSelVo> picList= mapper.selMealPicByImealList(imealList);
             for(MealPicSelVo vo: picList){
-                MealSelVo selVo= mealMap.get(vo.getImeal());
-                List<String> pics= selVo.getPics();
-                pics.add(vo.getPic());
-                //mealMap.get(vo.getImeal()).getPics().add(vo.getPic())
+                mealMap.get(vo.getImeal()).getPics().add(vo.getPic());
             }
             List<MealTagSelVo> tagList= mapper.selMealTagByImealList(imealList);
             for(MealTagSelVo vo: tagList){
@@ -46,6 +43,9 @@ public class MealService{
     }
     //일지 수정(사진, 태그 제외)
     public ResVo putMeal(MealUpdDto dto){
+        if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
+            return new ResVo(Const.FAIL);
+        }
         return new ResVo(mapper.updMeal(dto));
     }
     //일지 작성
@@ -53,9 +53,12 @@ public class MealService{
         if(dto.getPics().size()==Const.PIC_ZERO){return new ResVo(Const.NO_EXIST);}
         else if(dto.getPics().size()>Const.PIC_MAX){return new ResVo(Const.MANY_PIC);}
         else if(dto.getTags().size()>Const.TAG_MAX){return new ResVo(Const.MANY_TAG);}
-        mapper.insMeal(dto);
-        mapper.insMealPics(dto);
-        mapper.insMealTags(dto);
+        int affectedMeal= mapper.insMeal(dto);
+        if(affectedMeal==Const.ZERO){return new ResVo(Const.ZERO);}
+        int affectedMealPic= mapper.insMealPics(dto);
+        if(affectedMealPic==Const.ZERO){return new ResVo(Const.ZERO);}
+        int affectedMealTag= mapper.insMealTags(dto);
+        if(affectedMealTag==Const.ZERO){return new ResVo(Const.ZERO);}
         return new ResVo(Const.SUCCESS);
     }
     //일지 삭제(사진과 태그까지 동시에 전부 삭제)
