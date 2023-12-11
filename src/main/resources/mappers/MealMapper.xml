@@ -2,6 +2,74 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.mealdiary.meal.MealMapper">
+    <!--일지 리스트1-->
+    <select id="selMeal">
+        select
+        a.imeal,
+        a.title,
+        a.review,
+        a.created_at as createdAt
+        from t_meal a
+
+        <if test="search2!=null">
+            <choose>
+                <when test="searchText!=null">
+                    join t_meal_tag b
+                    on a.imeal= b.imeal
+                    where b.tag like #{search2} <!--like "%찌개%"-->
+                    <if test="bookmark==1">
+                        and a.bookmark= 1
+                    </if>
+                </when>
+                <otherwise>
+                    where a.title like #{search2} <!--like "%찌개%"-->
+                    <if test="bookmark==1">
+                        and a.bookmark= 1
+                    </if>
+                </otherwise>
+            </choose>
+        </if>
+
+        <if test= "bookmark==1 and search2==null">
+            where a.bookmark= 1
+        </if>
+        group by a.imeal
+        order by a.imeal desc
+        limit #{startIdx}, #{rowCount}
+    </select>
+    <!--일지 리스트2-->
+    <select id="selMealPicByImealList">
+        select
+        imeal,
+        pic
+        from t_meal_pic
+        where imeal in
+        <foreach collection="imealList" item="imeal" open="(" close=")" separator=",">
+            #{imeal}
+        </foreach>
+    </select>
+    <!--일지 리스트3-->
+    <select id="selMealTagByImealList">
+        select
+        imeal,
+        tag
+        from t_meal_tag
+        where imeal in
+        <foreach collection="imealList" item="imeal" open="(" close=")" separator=",">
+            #{imeal}
+        </foreach>
+    </select>
+    <!--일지 수정(사진, 태그 제외)-->
+    <update id="updMeal">
+        update
+        t_meal
+        set
+        title= #{title},
+        ingredient=#{ingredient},
+        recipe= #{recipe},
+        review= #{review}
+        where imeal= #{imeal}
+    </update>
     <!--일지 작성1-->
     <insert id="insMeal" useGeneratedKeys="true" keyProperty="imeal">
         insert into
@@ -33,14 +101,31 @@
             (#{imeal}, #{tag})
         </foreach>
     </insert>
-    <!--일지 사진 추가-->
-    <insert id="insMealPic">
-        insert into
-        t_meal_pic
-        set
-        imeal= #{imeal},
-        pic= #{pic}
-    </insert>
+    <!--일지 삭제1-->
+    <select id="selMealByImeal">
+        select
+        imeal
+        from t_meal
+        where imeal= #{imeal}
+    </select>
+    <!--일지 삭제2-->
+    <delete id="delMealPicByImeal">
+        delete
+        from t_meal_pic
+        where imeal= #{imeal}
+    </delete>
+    <!--일지 삭제3-->
+    <delete id="delMealTagByImeal">
+        delete
+        from t_meal_tag
+        where imeal= #{imeal}
+    </delete>
+    <!--일지 삭제4-->
+    <delete id="delMeal">
+        delete
+        from t_meal
+        where imeal= #{imeal}
+    </delete>
     <!--일지 태그 추가-->
     <insert id="insMealTag">
         insert into
@@ -49,6 +134,42 @@
         imeal= #{imeal},
         tag= #{tag}
     </insert>
+    <!--일지 태그 삭제-->
+    <delete id="delMealTag">
+        delete
+        from t_meal_tag
+        where itag= #{itag}
+    </delete>
+    <!--일지 태그 수정-->
+    <update id="updMealTag">
+        update
+        t_meal_tag
+        set
+        tag= #{tag}
+        where itag= #{itag}
+    </update>
+    <!--일지 사진 추가-->
+    <insert id="insMealPic">
+        insert into
+        t_meal_pic
+        set
+        imeal= #{imeal},
+        pic= #{pic}
+    </insert>
+    <!--일지 사진 삭제-->
+    <delete id="delMealPic">
+        delete
+        from t_meal_pic
+        where ipic= #{ipic}
+    </delete>
+    <!--일지 사진 수정-->
+    <update id="updMealPic">
+        update
+        t_meal_pic
+        set
+        pic= #{pic}
+        where ipic= #{ipic}
+    </update>
     <!--북마크 온오프 전 확인-->
     <select id="selBookmark" >
         select
@@ -72,61 +193,6 @@
         bookmark= 0
         where imeal= #{imeal}
     </update>
-    <!--일지 리스트1-->
-    <select id="selMeal">
-        select
-           a.imeal,
-           a.title,
-           a.review,
-           a.created_at as createdAt
-        from t_meal a
-        <if test="search2!=null">
-        <choose>
-            <when test="searchText!=null">
-                join t_meal_tag b
-                on a.imeal= b.imeal
-                where b.tag like #{search2}
-                <if test="bookmark==1">
-                    and a.bookmark= 1
-                </if>
-            </when>
-            <otherwise>
-                where a.title like #{search2}
-                <if test="bookmark==1">
-                    and a.bookmark= 1
-                </if>
-            </otherwise>
-        </choose>
-        </if>
-        <if test= "bookmark==1 and search2==null">
-            where a.bookmark= 1
-        </if>
-        group by a.imeal
-        order by a.imeal desc
-        limit #{startIdx}, #{rowCount}
-    </select>
-    <!--일지 리스트2-->
-    <select id="selMealPicByImealList">
-        select
-           imeal,
-           pic
-        from t_meal_pic
-        where imeal in
-        <foreach collection="imealList" item="imeal" open="(" close=")" separator=",">
-            #{imeal}
-        </foreach>
-    </select>
-    <!--일지 리스트3-->
-    <select id="selMealTagByImealList">
-        select
-           imeal,
-           tag
-        from t_meal_tag
-        where imeal in
-        <foreach collection="imealList" item="imeal" open="(" close=")" separator=",">
-            #{imeal}
-        </foreach>
-    </select>
     <!--일지 상세 정보1-->
     <select id="selDetail">
         select
@@ -154,63 +220,4 @@
         from t_meal_tag
         where imeal= #{imeal}
     </select>
-    <!--일지 수정(사진, 태그 제외)-->
-    <update id="updMeal">
-        update
-           t_meal
-           set
-              title= #{title},
-              ingredient=#{ingredient},
-              recipe= #{recipe},
-              review= #{review}
-        where imeal= #{imeal}
-    </update>
-    <!--일지 사진 수정-->
-    <update id="updMealPic">
-        update
-           t_meal_pic
-           set
-              pic= #{pic}
-        where ipic= #{ipic}
-    </update>
-    <!--일지 태그 수정-->
-    <update id="updMealTag">
-        update
-           t_meal_tag
-           set
-              tag= #{tag}
-        where itag= #{itag}
-    </update>
-    <!--일지 삭제1-->
-    <delete id="delMealPicByImeal">
-        delete
-           from t_meal_pic
-        where imeal= #{imeal}
-    </delete>
-    <!--일지 삭제2-->
-    <delete id="delMealTagByImeal">
-        delete
-           from t_meal_tag
-        where imeal= #{imeal}
-    </delete>
-    <!--일지 삭제3-->
-    <delete id="delMeal">
-        delete
-           from t_meal
-        where imeal= #{imeal}
-    </delete>
-    <!--일지 사진 삭제-->
-    <delete id="delMealPic">
-        delete
-           from t_meal_pic
-        where ipic= #{ipic}
-    </delete>
-    <!--일지 태그 삭제-->
-    <delete id="delMealTag">
-        delete
-           from t_meal_tag
-        where itag= #{itag}
-    </delete>
-
-
 </mapper>
