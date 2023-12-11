@@ -49,9 +49,9 @@ public class MealService{
     //일지 작성
     public ResVo postMeal(MealInsDto dto){
         if(dto.getPics().size()==Const.ZERO){return new ResVo(Const.NO_PIC);}
-        else if(dto.getPics().size()>Const.PIC_MAX){return new ResVo(Const.MANY_PIC);}
-        else if(dto.getTags().size()>Const.TAG_MAX){return new ResVo(Const.MANY_TAG);}
-        else if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
+        if(dto.getPics().size()>Const.PIC_MAX){return new ResVo(Const.MANY_PIC);}
+        if(dto.getTags().size()>Const.TAG_MAX){return new ResVo(Const.MANY_TAG);}
+        if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
             return new ResVo(Const.CANT_NULL);
         }
         for(String tag: dto.getTags()){
