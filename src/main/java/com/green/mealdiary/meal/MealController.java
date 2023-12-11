@@ -19,9 +19,12 @@ public class MealController {
 
     @GetMapping
     @Operation(summary ="첫 화면", description = "첫 메인 화면 처리<br>" +
-            "(page: 페이지(디폴트 값=1),row_count: 페이지 당 일지 갯수(디폴트 값=4)," +
+            "page: 페이지(디폴트 값=1),row_count: 페이지 당 일지 갯수(디폴트 값=4)," +
             "<br>bookmark: 북마크 여부(0:모든 일지, 1:북마크 있는 일지만)(디폴트 값=0), " +
-            "<br>search: 검색어(제목, 태그(#으로 시작)))")
+            "<br>search: 검색어(제목, 태그(#으로 시작))" +
+            "<br>(imeal: 일지pk, title: 제목(음식이름), review: 후기," +
+            "<br>createdAt: 일지 작성일자, pics: 해당 일지의 사진들," +
+            "<br>tags: 해당 일지의 태그들)")
     public List<MealSelVo> getMealList(@RequestParam(defaultValue = "1") int page,
                                        @RequestParam(name="row_count", required = false,
                                                defaultValue = "4") int rowCount,
@@ -38,30 +41,33 @@ public class MealController {
     }
 
     @PutMapping
-    @Operation(summary = "일지 수정", description = "일지 수정 처리<br>" +
-            "(title: 제목(음식 이름), ingredient: 재료, recipe: 레시피, review: 후기)" +
-            "<br>(result(-1): 입력받은 제목, 재료, 타이틀이 없습니다, (0): 실패, (1): 성공)")
+    @Operation(summary = "일지 수정", description = "일지 수정 처리" +
+            "<br>title: 제목(음식 이름), ingredient: 재료, recipe: 레시피, review: 후기" +
+            "<br>(result(-4): 입력받은 제목, 재료, 타이틀이 없습니다, (0): 실패, (1): 성공)")
     public ResVo putMeal(@RequestBody MealUpdDto dto) { return service.putMeal(dto);}
 
     @PostMapping
-    @Operation(summary = "일지 작성", description = "일지 작성 처리<br>" +
-            "(title: 제목(음식이름), ingredient: 식재료, recipe: 레시피, review: 후기," +
+    @Operation(summary = "일지 작성", description = "일지 작성 처리" +
+            "<br>title: 제목(음식이름), ingredient: 식재료, recipe: 레시피, review: 후기," +
             "<br>pics(리스트): 일지 사진, tags(리스트): 일지 태그)" +
-            "<br>(result(1): 성공, (0): 실패, (-1): 사진 없음, (-2): 사진 갯수 초과, (-3): 태그 갯수 초과)")
+            "<br>(result(1): 성공, (0): 실패, (-1): 사진 없음, (-2): 사진 갯수 초과," +
+            "<br>(-3): 태그 갯수 초과, (-4): 입력받은 제목, 재료, 타이틀이 없습니다," +
+            "<br>(-5): 태그에 띄워쓰기가 있습니다, (-6): 비정상적인 사진 등록" +
+            "<br>(-7): 비정상적인 태그 등록)")
     public ResVo postMeal(@RequestBody MealInsDto dto){
         return service.postMeal(dto);
     }
 
     @DeleteMapping
     @Operation(summary = "일지 삭제", description = "일지 삭제 처리" +
-            "<br>(imeal: 일지pk)" +
+            "<br>imeal: 일지pk" +
             "<br>(result(0): 실패, (1): 성공)")
     public ResVo delMeal(int imeal) { return service.delMeal(imeal);}
 
     @PostMapping("/tag")
     @Operation(summary = "일지 태그 추가", description = "일지 태그 추가 처리" +
             "<br>(imeal: 일지pk, tag: 추가할 태그 내용)" +
-            "<br>(result(0): 실패, (1): 성공, (-3): 태그 갯수 초과)")
+            "<br>(result(0): 실패, (1): 성공, (-3): 태그 갯수 초과, (-5): 태그에 띄워쓰기가 있습니다.)")
     public ResVo postMealTag(@RequestBody MealTagInsDto dto){
         return service.postMealTag(dto);
     }
@@ -75,7 +81,7 @@ public class MealController {
     @PatchMapping("/tag")
     @Operation(summary = "일지 태그 수정", description = "일지 태그 수정 처리" +
             "<br>(itag:태그pk, tag:수정할 태그)" +
-            "<br>(result(0): 실패, (1): 성공)")
+            "<br>(result(0): 실패, (1): 성공 (-5):태그에 띄워쓰기가 있습니다.)")
     public ResVo updMealTag(@RequestBody MealTagUpdDto dto){
         return service.updMealTag(dto);
     }

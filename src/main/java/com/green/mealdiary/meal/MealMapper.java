@@ -28,7 +28,7 @@ public interface MealMapper {
     int bookmarkOn(int imeal);//북마크 없으면 ON(2)-1
     int bookmarkOff(int imeal);//북마크 있으면 OFF(2)-2
     MealSelDetailVo selDetail(int imeal);//일지 상세 정보1
-    List<String> selMealPics(int imeal);//일지 상세 정보2, 일지 사진 수정 전 체크
-    List<String> selMealTags(int imeal);//일지 상세 정보3
+    List<String> selMealPics(int imeal);//일지 상세 정보2, 일지 사진  전 체크
+    List<String> selMealTags(int imeal);//일지 상세 정보3, 일지 태그 추가 전 체크
 
 }
