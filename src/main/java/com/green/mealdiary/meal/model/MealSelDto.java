@@ -9,9 +9,9 @@ import lombok.Data;
 
 @Data
 public class MealSelDto {
-    private int page;
+    private int page;//페이지
     @JsonIgnore
-    private int startIdx;
+    private int startIdx;//시
     private int rowCount;
     private int bookmark;
     private String search;
