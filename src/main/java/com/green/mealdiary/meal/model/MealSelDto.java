@@ -27,6 +27,7 @@ public class MealSelDto {
 
 
     public void setSearch(String search){
+        //#태그
         if(search.substring(0,1).equals("#")){//(0이상 1미만) 첫 한 글자가 "#"이면
             searchText=search.substring(0,1);//searchText= "#"
             search2= String.format("%%%s%%",search.substring(1));//#찌개 > %찌개%(태그)

@@ -56,11 +56,11 @@ public class MealService{
     }
     //일지 작성
     public ResVo postMeal(MealInsDto dto){
-        if(dto.getPics().size()==Const.ZERO){return new ResVo(Const.NO_PIC);}
+        if(dto.getPics()==null){return new ResVo(Const.NO_PIC);}
         //등록된 사진이 없다
         if(dto.getPics().size()>Const.PIC_MAX){return new ResVo(Const.MANY_PIC);}
         //등록된 사진이 최대 갯수를 초과했다
-        if(dto.getTags().size()>Const.TAG_MAX){return new ResVo(Const.MANY_TAG);}
+        if(dto.getTags()!=null && dto.getTags().size()>Const.TAG_MAX){return new ResVo(Const.MANY_TAG);}
         //등록된 태그가 최대 갯수를 초과했다
         if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
             return new ResVo(Const.CANT_NULL);
@@ -122,13 +122,18 @@ public class MealService{
     }
     //일지 사진 추가
     public ResVo postMealPic(MealPicInsDto dto){
-        if(mapper.selMealPics(dto.getImeal()).size()==Const.PIC_MAX){return new ResVo(Const.MANY_PIC);}
+        Integer targetImeal= mapper.selMealByImeal(dto.getImeal());//해당 일지가 있는지 확인
+        if(targetImeal==null||mapper.selMealPics(dto.getImeal()).size()==Const.PIC_MAX){
+            return new ResVo(Const.MANY_PIC);
+        }
         //해당 일지의 사진이 최대 갯수(3)만큼 있을 경우 추가 불가
         return new ResVo(mapper.insMealPic(dto));//사진 추가 실행
     }
     //일지 사진 삭제
     public ResVo delMealPic(MealPicDelDto dto){
-        if(mapper.selMealPics(dto.getImeal()).size()==Const.PIC_MIN){return new ResVo(Const.FAIL);}
+        if(mapper.selMealPics(dto.getImeal()).size()<=Const.PIC_MIN){
+            return new ResVo(Const.FAIL);
+        }
         //해당 일지의 사진이 최소 갯수(1)만큼 있을 경우 삭제 불가
         return new ResVo(mapper.delMealPic(dto.getIpic()));//사진 삭제 실행
     }
@@ -153,6 +158,7 @@ public class MealService{
     //일지 상세 정보
     public MealSelDetailVo getDetail(int imeal){
         MealSelDetailVo vo= mapper.selDetail(imeal);//해당 일지의 상세 정보(재료, 레시피 포함)
+        if(vo==null){return null;}
         List<String> picList= mapper.selMealPics(imeal);//해당 일지의 사진(1~3장)
         List<String> tagList= mapper.selMealTags(imeal);//해당 일지의 태그(0~5개)
         vo.setPics(picList);

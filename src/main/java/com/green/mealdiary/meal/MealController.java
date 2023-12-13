@@ -25,7 +25,7 @@ public class MealController {
             "<br>(imeal: 일지pk, title: 제목(음식이름), review: 후기," +
             "<br>createdAt: 일지 작성일자, pics: 해당 일지의 사진들," +
             "<br>tags: 해당 일지의 태그들)")
-    public List<MealSelVo> getMealList(@RequestParam(defaultValue = "1") int page,
+    public List<MealSelVo> getMealList(@RequestParam(required = false, defaultValue = "1") int page,
                                        @RequestParam(name="row_count", required = false,
                                                defaultValue = "4") int rowCount,
                                        @RequestParam(required = false, defaultValue = "0") int bookmark,
@@ -34,6 +34,7 @@ public class MealController {
         dto.setRowCount(rowCount);//페이지 당 일지 갯수
         dto.setPage(page);//페이지
         dto.setBookmark(bookmark);//북마크 검색(0:모든 일지, 1: 책갈피 설정한 일지만)
+
         if(search!=null && !search.equals("")){//검색어를 받았을 때
             dto.setSearch(search);
         }
@@ -81,7 +82,7 @@ public class MealController {
     @PatchMapping("/tag")
     @Operation(summary = "일지 태그 수정", description = "일지 태그 수정 처리" +
             "<br>itag:태그pk, tag:수정할 태그" +
-            "<br>(result(0): 실패, (1): 성공 (-5):태그에 띄워쓰기가 있습니다.)")
+            "<br>(result(0): 실패, (1): 성공, (-5):태그에 띄워쓰기가 있습니다.)")
     public ResVo updMealTag(@RequestBody MealTagUpdDto dto){
         return service.updMealTag(dto);
     }
@@ -89,7 +90,8 @@ public class MealController {
     @PostMapping("/pic")
     @Operation(summary = "일지 사진 추가", description = "일지 사진 추가 처리" +
             "<br>imeal: 일지pk, pic: 추가할 사진 주소" +
-            "<br>(result(0): 실패, (1): 성공, (-2): 사진 갯수 초과)")
+            "<br>(result(0): 실패, (1): 성공, (-1): 해당 일지는 없는 일지입니다, " +
+            "<br>(-2): 사진 갯수 초과)")
     public ResVo postMealPic(@RequestBody MealPicInsDto dto){
         return service.postMealPic(dto);
     }
@@ -97,7 +99,8 @@ public class MealController {
     @DeleteMapping("/pic")
     @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리" +
             "<br>imeal: 일지pk, ipic: 사진pk" +
-            "<br>(result(0): 실패, (1): 성공, (-1): 사진이 한 장이라서 삭제 불가)")
+            "<br>(result(0): 실패, (1): 성공, (-1): 사진이 한 장이라서 삭제 불가, " +
+            "<br>해당 일지는 없는 일지 입니다)")
     public ResVo delMealPic(MealPicDelDto dto) {return service.delMealPic(dto);}
 
     @PatchMapping("/pic")
@@ -116,7 +119,8 @@ public class MealController {
 
     @GetMapping("/{imeal}")
     @Operation(summary ="일지의 상세 정보 페이지", description = "일지 클릭 시 나오는 상세 페이지 처리" +
-            "<br>imeal: 일지 pk")
+            "<br>imeal: 일지 pk" +
+            "<br>(해당 일지가 없는 경우는 null)")
     public MealSelDetailVo getDetail(@PathVariable int imeal){
         return service.getDetail(imeal);
     }
