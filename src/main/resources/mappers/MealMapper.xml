@@ -21,7 +21,9 @@
                     </if>
                 </when>
                 <otherwise>
-                    WHERE A.title LIKE #{search2} <!--like "%찌개%"-->
+                    WHERE A.title LIKE #{search2}
+                    OR A.ingredient LIKE #{search2}
+                    OR A.recipe LIKE #{search2}<!--like "%찌개%"-->
                     <if test="bookmark==1">
                         AND A.bookmark= 1
                     </if>

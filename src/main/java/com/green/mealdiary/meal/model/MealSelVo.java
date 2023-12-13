@@ -12,4 +12,5 @@ public class MealSelVo {
     private String createdAt;//작성일자
     private List<String> pics;//일지 사진
     private List<String> tags;//일지 태그
+    private int result;
 }

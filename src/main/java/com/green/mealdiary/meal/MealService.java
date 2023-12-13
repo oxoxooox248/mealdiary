@@ -18,6 +18,16 @@ public class MealService{
 
     //일지 리스트(검색, 북마크 포함)
     public List<MealSelVo> getMeal(MealSelDto dto){
+        String[] search= dto.getSearch2().split("");
+        for(String str: search){
+            if(str.equals(" ")){
+                List<MealSelVo> mealList= new ArrayList();
+                MealSelVo vo= new MealSelVo();
+                vo.setResult(Const.NO_SPACE);
+                mealList.add(vo);
+                return mealList;
+            }
+        }
         List<MealSelVo> mealList= mapper.selMeal(dto);//일지 리스트1 (1,2,3,4)
         List<Integer> imealList= new ArrayList();//일지pk 리스트 생성
         Map<Integer, MealSelVo> mealMap= new HashMap();//<일지pk, 일지 객체> 맵 생성
@@ -56,19 +66,27 @@ public class MealService{
     }
     //일지 작성
     public ResVo postMeal(MealInsDto dto){
-        if(dto.getPics()==null){return new ResVo(Const.NO_PIC);}
+        if(dto.getPics()==null){
+            return new ResVo(Const.NO_PIC);
+        }
         //등록된 사진이 없다
-        if(dto.getPics().size()>Const.PIC_MAX){return new ResVo(Const.MANY_PIC);}
+        if(dto.getPics().size()>Const.PIC_MAX){
+            return new ResVo(Const.MANY_PIC);
+        }
         //등록된 사진이 최대 갯수를 초과했다
-        if(dto.getTags()!=null && dto.getTags().size()>Const.TAG_MAX){return new ResVo(Const.MANY_TAG);}
+        if(dto.getTags()!=null && dto.getTags().size()>Const.TAG_MAX){
+            return new ResVo(Const.MANY_TAG);
+        }
         //등록된 태그가 최대 갯수를 초과했다
         if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
             return new ResVo(Const.CANT_NULL);
         }//제목, 재료, 레시피는 반드시 입력 받아야 한다
-        for(String tag: dto.getTags()){
-            for(String text: tag.split("")){
-                if(text.equals(" ")){
-                    return new ResVo(Const.NO_SPACE);
+        if(dto.getTags()!=null) {
+            for (String tag : dto.getTags()) {
+                for (String text : tag.split("")) {
+                    if (text.equals(" ")) {
+                        return new ResVo(Const.NO_SPACE);
+                    }
                 }
             }
         }//태그에 띄어쓰기가 들어가면 안 된다
@@ -79,7 +97,7 @@ public class MealService{
             return new ResVo(Const.PIC_FAIL);
         }//일지 사진 등록이 제대로 안 됐을 때
         if(dto.getTags()==null){return new ResVo(Const.SUCCESS);}//태그가 없을 때
-        //(태그는 없어도 된다)
+        //태그는 없어도 된다
         int affectedMealTag= mapper.insMealTags(dto);//일지 태그 등록 실행
         if(affectedMealTag!=dto.getTags().size()){
             return new ResVo(Const.TAG_FAIL);
