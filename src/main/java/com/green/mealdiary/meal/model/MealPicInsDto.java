@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MealPicInsDto {
-    private int imeal;
-    private String pic;
+    private int imeal;//해당 일지pk
+    private String pic;//추가할 사진
 }

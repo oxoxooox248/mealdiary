@@ -9,13 +9,13 @@ import java.util.List;
 @Data
 public class MealInsDto {
     @JsonIgnore
-    private int imeal;
+    private int imeal;//일지 작성할 때 생성되는 pk값
     @JsonIgnore
-    private int iuser= 1;
-    private String title;
-    private String ingredient;
-    private String recipe;
-    private String review;
-    private List<String> pics;
-    private List<String> tags;
+    private int iuser= 1;//유저pk 1로 고정
+    private String title;//제목(음식이름) not null
+    private String ingredient;//재료 not null
+    private String recipe;//레시피 not null
+    private String review;//리뷰
+    private List<String> pics;//사진(1~3)
+    private List<String> tags;//태그(~5)
 }
