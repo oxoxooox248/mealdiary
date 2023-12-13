@@ -138,6 +138,8 @@ public class MealService{
     }
     //북마크 온오프
     public ResVo toggleBookmark(int imeal){
+        Integer check=mapper.selMealByImeal(imeal);
+        if(check==null){return new ResVo(Const.NO_EXIST);}
         int bookmark= mapper.selBookmark(imeal);//현재 북마크 상태 확인
         if(bookmark==Const.BOOKMARK_OFF){//북마크 아니면
             mapper.bookmarkOn(imeal);//북마크 설정

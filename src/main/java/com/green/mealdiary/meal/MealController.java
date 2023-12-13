@@ -111,7 +111,7 @@ public class MealController {
     @PostMapping("/bookmark")
     @Operation(summary = "책갈피 표시/해제", description = "북마크 on/off 토글로 처리" +
             "<br>imeal: 일지pk" +
-            "<br>(result(0): 해제, (1): 표시)")
+            "<br>(result(-1): 해당 일지는 없는 일지입니다, (0): 해제, (1): 표시)")
     public ResVo toggleBookmark(int imeal) {return service.toggleBookmark(imeal);}
 
     @GetMapping("/{imeal}")
