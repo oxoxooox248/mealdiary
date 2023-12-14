@@ -20,30 +20,31 @@ public class MealService{
 
     //일지 리스트(검색, 북마크 포함)
     public List<MealSelVo> getMeal(MealSelDto dto){
-        if(dto.getSearch()!=null){
-            if(dto.getSearch().length()>10){
+        if(dto.getSearch()!=null){//검색어를 입력받았을 때(빈 칸 제외)
+            if(dto.getSearch().length()>Const.SEARCH_MAX){//검색어가 10자를 넘어가면
                 List<MealSelVo> mealList= new ArrayList();
                 MealSelVo vo= new MealSelVo();
-                vo.setResult(Const.ABNORMAL_SEARCH_FORM);
+                vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
                 mealList.add(vo);
                 return mealList;
-            } else if(dto.getSearch().substring(0,1).equals("#")){
-                dto.setSearchText(dto.getSearch().substring(0,1));
+            } else if(dto.getSearch().substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
+                dto.setSearchText(dto.getSearch().substring(0,1));//searchText= "#"
                 if(Pattern.matches(Const.REGEXP_PATTERN_CHAR,dto.getSearch().substring(1))){
-                dto.setSearch2(String.format("%%%s%%",dto.getSearch().substring(1)));
-                } else {
+                //#뒤에 띄어쓰기나 특수문자 없으면
+                dto.setSearch2(String.format("%%%s%%",dto.getSearch().substring(1)));//search2= "%찌개%" > 태그 검색
+                } else { //#뒤에 띄어쓰기나 특수문자 있으면
                     List<MealSelVo> mealList= new ArrayList();
                     MealSelVo vo= new MealSelVo();
-                    vo.setResult(Const.ABNORMAL_SEARCH_FORM);
+                    vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
                     mealList.add(vo);
                     return mealList;
                 }
-            } else if(Pattern.matches(Const.REGEXP_PATTERN_CHAR,dto.getSearch())){
-                dto.setSearch2(String.format("%%%s%%",dto.getSearch()));
+            } else if(Pattern.matches(Const.REGEXP_PATTERN_CHAR,dto.getSearch())){//검색어에 띄어쓰기나 특수문자 없으면
+                dto.setSearch2(String.format("%%%s%%",dto.getSearch()));//search2= "%찌개%" > 제목 검색
             } else {
                 List<MealSelVo> mealList= new ArrayList();
                 MealSelVo vo= new MealSelVo();
-                vo.setResult(Const.ABNORMAL_SEARCH_FORM);
+                vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
                 mealList.add(vo);
                 return mealList;
             }
@@ -86,18 +87,15 @@ public class MealService{
     }
     //일지 작성
     public ResVo postMeal(MealInsDto dto){
-        if(dto.getPics()==null){
+        if(dto.getPics()==null){//등록된 사진이 없다
             return new ResVo(Const.NO_PIC);
         }
-        //등록된 사진이 없다
-        if(dto.getPics().size()>Const.PIC_MAX){
+        if(dto.getPics().size()>Const.PIC_MAX){//등록된 사진이 최대 갯수를 초과했다
             return new ResVo(Const.MANY_PIC);
         }
-        //등록된 사진이 최대 갯수를 초과했다
         if(dto.getTags()!=null && dto.getTags().size()>Const.TAG_MAX){
             return new ResVo(Const.MANY_TAG);
-        }
-        //등록된 태그가 최대 갯수를 초과했다
+        }//등록된 태그가 최대 갯수를 초과했다
         if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
             return new ResVo(Const.CANT_NULL);
         }//제목, 재료, 레시피는 반드시 입력 받아야 한다
