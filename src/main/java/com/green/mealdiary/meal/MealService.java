@@ -107,7 +107,7 @@ public class MealService{
                     return new ResVo(Const.ABNORMAL_TAG_FORM);
                 }
             }
-        }//태그에 띄어쓰기가 들어가면 안 된다
+        }//태그에 띄어쓰기와 특수문자가 들어가면 안 된다
         int affectedMeal= mapper.insMeal(dto);//일지 등록 실행
         if(affectedMeal==Const.ZERO){return new ResVo(Const.ZERO);}//일지 등록이 안 됐을 때
         int affectedMealPic= mapper.insMealPics(dto);//일지 사진 등록 실행

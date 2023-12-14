@@ -26,7 +26,7 @@ public class MealController {
             "<br>search: 검색어(제목, 태그(#으로 시작))" +
             "<br>(imeal: 일지pk, title: 제목(음식이름), review: 후기," +
             "<br>createdAt: 일지 작성일자, pics: 해당 일지의 사진들," +
-            "<br>tags: 해당 일지의 태그들)")
+            "<br>tags: 해당 일지의 태그들, result(-1): 비정상적인 검색어)")
     public List<MealSelVo> getMealList(@RequestParam(required = false, defaultValue = "1") int page,
                                        @RequestParam(name="row_count", required = false,
                                                defaultValue = "4") int rowCount,
@@ -69,7 +69,8 @@ public class MealController {
     @PostMapping("/tag")
     @Operation(summary = "일지 태그 추가", description = "일지 태그 추가 처리" +
             "<br>imeal: 일지pk, tag: 추가할 태그 내용" +
-            "<br>(result(0): 실패, (1): 성공, (-3): 태그 갯수 초과, (-5): 태그에 띄워쓰기와 특수문자가 있습니다.)")
+            "<br>(result(0): 실패, (1): 성공, (-3): 태그 갯수 초과," +
+            "<br>(-4): 입력된 태그가 없습니다, (-5): 태그에 띄워쓰기와 특수문자가 있습니다.)")
     public ResVo postMealTag(@RequestBody MealTagInsDto dto){
         return service.postMealTag(dto);
     }
@@ -83,7 +84,8 @@ public class MealController {
     @PatchMapping("/tag")
     @Operation(summary = "일지 태그 수정", description = "일지 태그 수정 처리" +
             "<br>itag:태그pk, tag:수정할 태그" +
-            "<br>(result(0): 실패, (1): 성공, (-5):태그에 띄워쓰기와 특수문자가 있습니다.)")
+            "<br>(result(0): 실패, (1): 성공," +
+            "<br>(-4): 입력된 태그가 없습니다, (-5):태그에 띄워쓰기와 특수문자가 있습니다.)")
     public ResVo updMealTag(@RequestBody MealTagUpdDto dto){
         return service.updMealTag(dto);
     }
@@ -121,7 +123,7 @@ public class MealController {
     @GetMapping("/{imeal}")
     @Operation(summary ="일지의 상세 정보 페이지", description = "일지 클릭 시 나오는 상세 페이지 처리" +
             "<br>imeal: 일지 pk" +
-            "<br>(해당 일지가 없는 경우는 null)")
+            "<br>(해당 일지가 없는 경우는 null- 제대로 imeal값이 넘어오지 않았을 때)")
     public MealSelDetailVo getDetail(@PathVariable int imeal){
         return service.getDetail(imeal);
     }
