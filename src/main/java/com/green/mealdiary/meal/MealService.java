@@ -50,30 +50,32 @@ public class MealService{
             }
         }
         List<MealSelVo> mealList= mapper.selMeal(dto);//일지 리스트1 (1,2,3,4)
-        List<Integer> imealList= new ArrayList();//일지pk 리스트 생성
-        Map<Integer, MealSelVo> mealMap= new HashMap();//<일지pk, 일지 객체> 맵 생성
-        for(MealSelVo vo: mealList){
-            imealList.add(vo.getImeal());//한 페이지의 일지pk를 imealList에 add
-            mealMap.put(vo.getImeal(), vo);//맵에 <key, value>: <일지pk, 일지 객체 주소값>을 put
-            vo.setPics(new ArrayList());//일지 객체의 pics에 사진 주소값 넣을 리스트 생성
-            vo.setTags(new ArrayList());//일지 객체의 tags에 태그 넣을 리스트 생성
-        }//imealList: 1,2,3,4
-        //mealMap: (1,vo), (2,vo), (3,vo), (4,vo)
-        //반복문 돌면서 vo안에 있는 pics랑 tags에 새로운 리스트를 만든다
-        if(imealList.size()>0){
-            List<MealPicSelVo> picList= mapper.selMealPicByImealList(imealList);
+        if(mealList.size()>0){
+            List<Integer> imealList= new ArrayList();//일지pk 리스트 생성
+            Map<Integer, MealSelVo> mealMap= new HashMap();//<일지pk, 일지 객체> 맵 생성
+            for (MealSelVo vo : mealList) {
+                imealList.add(vo.getImeal());//한 페이지의 일지pk를 imealList에 add
+                mealMap.put(vo.getImeal(), vo);//맵에 <key, value>: <일지pk, 일지 객체 주소값>을 put
+                vo.setPics(new ArrayList());//일지 객체의 pics에 사진 주소값 넣을 리스트 생성
+                vo.setTags(new ArrayList());//일지 객체의 tags에 태그 넣을 리스트 생성
+            }//imealList: 1,2,3,4
+            //mealMap: (1,vo), (2,vo), (3,vo), (4,vo)
+            //반복문 돌면서 vo안에 있는 pics랑 tags에 새로운 리스트를 만든다
+            if(imealList.size()>0){
+                List<MealPicSelVo> picList= mapper.selMealPicByImealList(imealList);
             //만약 1번 일지에 사진이 3장 있으면  (1,사진1),(1,사진2),(1,사진3)이 있는 MealPicSelVo 객체 3개
             //만약 2번 일지에 사진이 1장만 있으면 (2,사진1)이 있는 MealPicSelVo 객체 1개
             //만약 3번 일지에 사진이 2장 있으면 (3,사진1), (3,사진2)이 있는 MealPicSelVo 객체 2개
             //만약 4번 일지에 사진이 1장만 있으면 (4,사진1)이 있는 MealPicSelVo 객체 1개
-            for(MealPicSelVo vo: picList){
-                mealMap.get(vo.getImeal()).getPics().add(vo.getPic());
-            }//MealPicSelVo에 있는 사진들을 mealselvo에 있는 pics(List<String>)에 추가한다
-            List<MealTagSelVo> tagList= mapper.selMealTagByImealList(imealList);
+                for(MealPicSelVo vo: picList){
+                    mealMap.get(vo.getImeal()).getPics().add(vo.getPic());
+                }//MealPicSelVo에 있는 사진들을 mealselvo에 있는 pics(List<String>)에 추가한다
+                List<MealTagSelVo> tagList= mapper.selMealTagByImealList(imealList);
             //위의 사진들을 MealSelVo에 있는 pics(List<String>)에 넣는 방법과 동일하지만
             //일지의 태그는 0개일 수 있다는 차이가 있다(tagList.size()=0)
-            for(MealTagSelVo vo: tagList){
-                mealMap.get(vo.getImeal()).getTags().add(vo.getTag());
+                for(MealTagSelVo vo: tagList){
+                    mealMap.get(vo.getImeal()).getTags().add(vo.getTag());
+                }
             }
         }
         return mealList;//사진과 태그 담는 것까지 완료한 mealList
@@ -148,9 +150,9 @@ public class MealService{
     }
     //일지 태그 수정
     public ResVo updMealTag(MealTagUpdDto dto){
-        if(dto.getTag()==null){
+        if(dto.getTag()==null||dto.getTag().equals("")){
             return new ResVo(Const.CANT_NULL);
-            //태그를 null로 수정하면 안된다.
+            //태그가 null이거나 빈 칸일 때는 수정하면 안된다.
         } else if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, dto.getTag())){
             //태그에 띄어쓰기나 특수문자가 들어가면 안 된다
             return new ResVo(Const.ABNORMAL_TAG_FORM);
@@ -160,22 +162,29 @@ public class MealService{
     //일지 사진 추가
     public ResVo postMealPic(MealPicInsDto dto){
         Integer targetImeal= mapper.selMealByImeal(dto.getImeal());//해당 일지가 있는지 확인
-        if(targetImeal==null||mapper.selMealPics(dto.getImeal()).size()==Const.PIC_MAX){
+        if(targetImeal==null||dto.getPic()==null||dto.getPic().equals("")){
+            //해당 일지가 존재하지 않거나 입력받은 사진이 null이거나 빈 칸일 때
+            return new ResVo(Const.NO_EXIST);
+        } else if(mapper.selMealPics(dto.getImeal()).size()==Const.PIC_MAX){
+            //해당 일지의 사진이 최대 갯수(3)만큼 있을 경우 추가 불가
             return new ResVo(Const.MANY_PIC);
         }
-        //해당 일지의 사진이 최대 갯수(3)만큼 있을 경우 추가 불가
         return new ResVo(mapper.insMealPic(dto));//사진 추가 실행
     }
     //일지 사진 삭제
     public ResVo delMealPic(MealPicDelDto dto){
-        if(mapper.selMealPics(dto.getImeal()).size()<=Const.PIC_MIN){
+        if(dto.getImeal()==0||
+                mapper.selMealPics(dto.getImeal()).size()<=Const.PIC_MIN){
             return new ResVo(Const.FAIL);
         }
-        //해당 일지의 사진이 최소 갯수(1)만큼 있을 경우 삭제 불가
+        //해당 일지가 존재하지 않거나 사진이 최소 갯수(1)만큼 있을 경우 삭제 불가
         return new ResVo(mapper.delMealPic(dto.getIpic()));//사진 삭제 실행
     }
     //일지 사진 수정
     public ResVo updMealPic(MealPicUpdDto dto){
+        if(dto.getPic()==null||dto.getPic().equals("")){
+            return new ResVo(Const.CANT_NULL);
+        }//입력받은 사진이 없거나 빈 칸일 때
         return new ResVo(mapper.updMealPic(dto));
     }
     //북마크 온오프
@@ -195,7 +204,7 @@ public class MealService{
     //일지 상세 정보
     public MealSelDetailVo getDetail(int imeal){
         MealSelDetailVo vo= mapper.selDetail(imeal);//해당 일지의 상세 정보(재료, 레시피 포함)
-        if(vo==null){return null;}
+        if(vo==null){return new MealSelDetailVo();}//비어있는 객체 리턴
         List<String> picList= mapper.selMealPics(imeal);//해당 일지의 사진(1~3장)
         List<String> tagList= mapper.selMealTags(imeal);//해당 일지의 태그(0~5개)
         vo.setPics(picList);

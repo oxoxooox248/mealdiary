@@ -26,7 +26,7 @@ public class MealController {
             "<br>search: 검색어(제목, 태그(#으로 시작))" +
             "<br>(imeal: 일지pk, title: 제목(음식이름), review: 후기," +
             "<br>createdAt: 일지 작성일자, pics: 해당 일지의 사진들," +
-            "<br>tags: 해당 일지의 태그들, result(-1): 비정상적인 검색어)")
+            "<br>tags: 해당 일지의 태그들, result(-1): 비정상적인 검색어, (1): 정상)")
     public List<MealSelVo> getMealList(@RequestParam(required = false, defaultValue = "1") int page,
                                        @RequestParam(name="row_count", required = false,
                                                defaultValue = "4") int rowCount,
@@ -93,8 +93,8 @@ public class MealController {
     @PostMapping("/pic")
     @Operation(summary = "일지 사진 추가", description = "일지 사진 추가 처리" +
             "<br>imeal: 일지pk, pic: 추가할 사진 주소" +
-            "<br>(result(0): 실패, (1): 성공, (-1): 해당 일지는 없는 일지입니다, " +
-            "<br>(-2): 사진 갯수 초과)")
+            "<br>(result(0): 실패, (1): 성공, (-1): 해당 일지는 없는 일지 or 입력받은 사진이 존재하지 않음, " +
+            "<br>(-2): 사진 갯수 초과로 더 추가 불가)")
     public ResVo postMealPic(@RequestBody MealPicInsDto dto){
         return service.postMealPic(dto);
     }
@@ -109,7 +109,7 @@ public class MealController {
     @PatchMapping("/pic")
     @Operation(summary = "일지 사진 수정", description = "일지 수정 처리" +
             "<br>ipic: 사진pk, pic: 수정할 사진" +
-            "<br>(result(0): 실패, (1): 성공)")
+            "<br>(result(0): 실패, (1): 성공, (-4): 입력된 사진이 없습니다.)")
     public ResVo updMealPic(@RequestBody MealPicUpdDto dto){
         return service.updMealPic(dto);
     }
