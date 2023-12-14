@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.regex.Pattern;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +36,6 @@ public class MealController {
         dto.setRowCount(rowCount);//페이지 당 일지 갯수
         dto.setPage(page);//페이지
         dto.setBookmark(bookmark);//북마크 검색(0:모든 일지, 1: 책갈피 설정한 일지만)
-
         if(search!=null && !search.equals("")){//검색어를 받았을 때
             dto.setSearch(search);
         }
@@ -53,7 +54,7 @@ public class MealController {
             "<br>pics(리스트): 일지 사진, tags(리스트): 일지 태그" +
             "<br>(result(1): 성공, (0): 실패, (-1): 사진 없음, (-2): 사진 갯수 초과," +
             "<br>(-3): 태그 갯수 초과, (-4): 입력받은 제목, 재료, 타이틀이 없습니다," +
-            "<br>(-5): 태그에 띄워쓰기가 있습니다, (-6): 비정상적인 사진 등록" +
+            "<br>(-5): 태그에 띄워쓰기와 특수문자가 있습니다, (-6): 비정상적인 사진 등록" +
             "<br>(-7): 비정상적인 태그 등록)")
     public ResVo postMeal(@RequestBody MealInsDto dto){
         return service.postMeal(dto);
@@ -68,7 +69,7 @@ public class MealController {
     @PostMapping("/tag")
     @Operation(summary = "일지 태그 추가", description = "일지 태그 추가 처리" +
             "<br>imeal: 일지pk, tag: 추가할 태그 내용" +
-            "<br>(result(0): 실패, (1): 성공, (-3): 태그 갯수 초과, (-5): 태그에 띄워쓰기가 있습니다.)")
+            "<br>(result(0): 실패, (1): 성공, (-3): 태그 갯수 초과, (-5): 태그에 띄워쓰기와 특수문자가 있습니다.)")
     public ResVo postMealTag(@RequestBody MealTagInsDto dto){
         return service.postMealTag(dto);
     }
@@ -82,7 +83,7 @@ public class MealController {
     @PatchMapping("/tag")
     @Operation(summary = "일지 태그 수정", description = "일지 태그 수정 처리" +
             "<br>itag:태그pk, tag:수정할 태그" +
-            "<br>(result(0): 실패, (1): 성공, (-5):태그에 띄워쓰기가 있습니다.)")
+            "<br>(result(0): 실패, (1): 성공, (-5):태그에 띄워쓰기와 특수문자가 있습니다.)")
     public ResVo updMealTag(@RequestBody MealTagUpdDto dto){
         return service.updMealTag(dto);
     }

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -18,12 +20,30 @@ public class MealService{
 
     //일지 리스트(검색, 북마크 포함)
     public List<MealSelVo> getMeal(MealSelDto dto){
-        String[] search= dto.getSearch2().split("");
-        for(String str: search){
-            if(str.equals(" ")){
+        if(dto.getSearch()!=null){
+            if(dto.getSearch().length()>10){
                 List<MealSelVo> mealList= new ArrayList();
                 MealSelVo vo= new MealSelVo();
-                vo.setResult(Const.NO_SPACE);
+                vo.setResult(Const.ABNORMAL_SEARCH_FORM);
+                mealList.add(vo);
+                return mealList;
+            } else if(dto.getSearch().substring(0,1).equals("#")){
+                dto.setSearchText(dto.getSearch().substring(0,1));
+                if(Pattern.matches(Const.REGEXP_PATTERN_CHAR,dto.getSearch().substring(1))){
+                dto.setSearch2(String.format("%%%s%%",dto.getSearch().substring(1)));
+                } else {
+                    List<MealSelVo> mealList= new ArrayList();
+                    MealSelVo vo= new MealSelVo();
+                    vo.setResult(Const.ABNORMAL_SEARCH_FORM);
+                    mealList.add(vo);
+                    return mealList;
+                }
+            } else if(Pattern.matches(Const.REGEXP_PATTERN_CHAR,dto.getSearch())){
+                dto.setSearch2(String.format("%%%s%%",dto.getSearch()));
+            } else {
+                List<MealSelVo> mealList= new ArrayList();
+                MealSelVo vo= new MealSelVo();
+                vo.setResult(Const.ABNORMAL_SEARCH_FORM);
                 mealList.add(vo);
                 return mealList;
             }
@@ -83,10 +103,8 @@ public class MealService{
         }//제목, 재료, 레시피는 반드시 입력 받아야 한다
         if(dto.getTags()!=null) {
             for (String tag : dto.getTags()) {
-                for (String text : tag.split("")) {
-                    if (text.equals(" ")) {
-                        return new ResVo(Const.NO_SPACE);
-                    }
+                if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, tag)){
+                    return new ResVo(Const.ABNORMAL_TAG_FORM);
                 }
             }
         }//태그에 띄어쓰기가 들어가면 안 된다
@@ -114,14 +132,16 @@ public class MealService{
     }
     //일지 태그 추가
     public ResVo postMealTag(MealTagInsDto dto){
-        if(mapper.selMealTags(dto.getImeal()).size()==Const.TAG_MAX){return new ResVo(Const.MANY_TAG);}
-        //해당 일지의 태그가 최대 갯수(5)만큼 있을 경우 추가 불가
-        String[] tag= dto.getTag().split("");
-        for(String str: tag){
-            if(str.equals(" ")){
-                return new ResVo(Const.NO_SPACE);
-            }
-        }//태그에 띄어쓰기가 들어가면 안 된다
+        if(dto.getTag()==null){
+            return new ResVo(Const.CANT_NULL);
+            //태그 추가할 때 null로 추가하면 안 된다.
+        } else if(mapper.selMealTags(dto.getImeal()).size()==Const.TAG_MAX){
+            //해당 일지의 태그가 최대 갯수(5)만큼 있을 경우 추가 불가
+            return new ResVo(Const.MANY_TAG);
+        } else if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, dto.getTag())){
+            //태그에 띄어쓰기나 특수문자가 들어가면 안 된다
+            return new ResVo(Const.ABNORMAL_TAG_FORM);
+        }
         return new ResVo(mapper.insMealTag(dto));//태그 추가 실행
     }
     //일지 태그 삭제
@@ -130,12 +150,13 @@ public class MealService{
     }
     //일지 태그 수정
     public ResVo updMealTag(MealTagUpdDto dto){
-        String[] tag= dto.getTag().split("");
-        for(String str: tag){
-            if(str.equals(" ")){
-                return new ResVo(Const.NO_SPACE);
-            }
-        }//태그에 띄어쓰기가 들어가면 안 된다
+        if(dto.getTag()==null){
+            return new ResVo(Const.CANT_NULL);
+            //태그를 null로 수정하면 안된다.
+        } else if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, dto.getTag())){
+            //태그에 띄어쓰기나 특수문자가 들어가면 안 된다
+            return new ResVo(Const.ABNORMAL_TAG_FORM);
+        }
         return new ResVo(mapper.updMealTag(dto));//태그 수정 실행
     }
     //일지 사진 추가

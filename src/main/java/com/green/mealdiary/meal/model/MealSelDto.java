@@ -20,21 +20,10 @@ public class MealSelDto {
     @JsonIgnore
     private String search2;//(1)검색어 (2)"#"뒤에 검색어
 
-
     public void setPage(int page){
         this.startIdx= (page-1)*this.rowCount;//page와 rowCount를 이용하여 startIdx를 구한다.
     }
 
-
-    public void setSearch(String search){
-        //#태그
-        if(search.substring(0,1).equals("#")){//(0이상 1미만) 첫 한 글자가 "#"이면
-            searchText=search.substring(0,1);//searchText= "#"
-            search2= String.format("%%%s%%",search.substring(1));//#찌개 > %찌개%(태그)
-        } else{
-            search2= String.format("%%%s%%",search);//searchText= null, 찌개 > %찌개%(제목)
-        }
-    }
 
 
 }
