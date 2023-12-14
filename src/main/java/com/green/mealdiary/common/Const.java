@@ -17,7 +17,7 @@ public class Const {
     public static final int ABNORMAL_TAG_FORM= -5;
     public static final int PIC_FAIL= -6;
     public static final int TAG_FAIL= -7;
-    public static final String REGEXP_PATTERN_CHAR = "^[\\w]*$";
+    public static final String REGEXP_PATTERN_CHAR = "^[0-9a-zA-Zㄱ-ㅎ가-힣]*$";
     public static final int ABNORMAL_SEARCH_FORM= -1;
     public static final int SEARCH_MAX= 10;
     public static final String HASH_SIGN= "#";
