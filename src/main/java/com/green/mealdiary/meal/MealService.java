@@ -69,7 +69,7 @@ public class MealService{
             //만약 4번 일지에 사진이 1장만 있으면 (4,사진1)이 있는 MealPicSelVo 객체 1개
                 for(MealPicSelVo vo: picList){
                     mealMap.get(vo.getImeal()).getPics().add(vo.getPic());
-                }//MealPicSelVo에 있는 사진들을 mealselvo에 있는 pics(List<String>)에 추가한다
+                }//MealPicSelVo에 있는 사진들을 MealSelVo에 있는 pics(List<String>)에 추가한다
                 List<MealTagSelVo> tagList= mapper.selMealTagByImealList(imealList);
             //위의 사진들을 MealSelVo에 있는 pics(List<String>)에 넣는 방법과 동일하지만
             //일지의 태그는 0개일 수 있다는 차이가 있다(tagList.size()=0)
