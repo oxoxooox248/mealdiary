@@ -28,7 +28,7 @@ public class MealService{
                 mealList.add(vo);
                 return mealList;
             } else if(dto.getSearch().substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
-                dto.setSearchText(dto.getSearch().substring(0,1));//searchText= "#"
+                dto.setSearchText(Const.HASH_SIGN);//searchText= "#"
                 if(Pattern.matches(Const.REGEXP_PATTERN_CHAR,dto.getSearch().substring(1))){
                 //#뒤에 띄어쓰기나 특수문자 없으면
                 dto.setSearch2(String.format("%%%s%%",dto.getSearch().substring(1)));//search2= "%찌개%" > 태그 검색
@@ -82,7 +82,12 @@ public class MealService{
     }
     //일지 수정(사진, 태그 제외)
     public ResVo putMeal(MealUpdDto dto){
-        if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
+        if(dto.getTitle()==null
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getTitle())
+                ||dto.getIngredient()==null
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getIngredient())
+                ||dto.getRecipe()==null
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getRecipe())){
             return new ResVo(Const.CANT_NULL);
         }//제목, 재료, 레시피는 반드시 입력 받아야 한다
         return new ResVo(mapper.updMeal(dto));//(0): 수정이 실행 안됨, (1): 수정 완료
@@ -91,23 +96,33 @@ public class MealService{
     public ResVo postMeal(MealInsDto dto){
         if(dto.getPics()==null){//등록된 사진이 없다
             return new ResVo(Const.NO_PIC);
-        }
-        if(dto.getPics().size()>Const.PIC_MAX){//등록된 사진이 최대 갯수를 초과했다
-            return new ResVo(Const.MANY_PIC);
-        }
-        if(dto.getTags()!=null && dto.getTags().size()>Const.TAG_MAX){
-            return new ResVo(Const.MANY_TAG);
-        }//등록된 태그가 최대 갯수를 초과했다
-        if(dto.getTitle()==null||dto.getIngredient()==null||dto.getRecipe()==null){
-            return new ResVo(Const.CANT_NULL);
-        }//제목, 재료, 레시피는 반드시 입력 받아야 한다
-        if(dto.getTags()!=null) {
-            for (String tag : dto.getTags()) {
-                if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, tag)){
-                    return new ResVo(Const.ABNORMAL_TAG_FORM);
-                }
+        } else if(dto.getPics()!=null){
+            for (String pic : dto.getPics()) {
+                if(Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,pic)
+                        ||pic.equals("")){
+                    return new ResVo(Const.ABNORMAL_PIC_FORM);
+                }//사진이 빈 칸이면 안 된다
             }
-        }//태그에 띄어쓰기와 특수문자가 들어가면 안 된다
+        } else if(dto.getPics().size()>Const.PIC_MAX){//등록된 사진이 최대 갯수를 초과했다
+            return new ResVo(Const.MANY_PIC);
+        } else if(dto.getTags()!=null && dto.getTags().size()>Const.TAG_MAX) {
+            return new ResVo(Const.MANY_TAG);//등록된 태그가 최대 갯수를 초과했다
+        } else if(dto.getTitle()==null
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getTitle())
+                ||dto.getIngredient()==null
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getIngredient())
+                ||dto.getRecipe()==null
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getRecipe())){
+            return new ResVo(Const.CANT_NULL);//제목, 재료, 레시피는 반드시 입력 받아야 한다
+        } else if(dto.getTags()!=null) {
+            for (String tag : dto.getTags()) {
+                if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, tag)
+                        ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,tag)
+                        ||tag.equals("")){
+                    return new ResVo(Const.ABNORMAL_TAG_FORM);
+                }//태그에 빈 칸이거나 띄어쓰기 혹은 특수문자가 들어가면 안 된다
+            }
+        }
         int affectedMeal= mapper.insMeal(dto);//일지 등록 실행
         if(affectedMeal==Const.ZERO){return new ResVo(Const.ZERO);}//일지 등록이 안 됐을 때
         int affectedMealPic= mapper.insMealPics(dto);//일지 사진 등록 실행
@@ -132,9 +147,10 @@ public class MealService{
     }
     //일지 태그 추가
     public ResVo postMealTag(MealTagInsDto dto){
-        if(dto.getTag()==null){
+        if(dto.getTag()==null||dto.getTag().equals("")
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getTag())){
             return new ResVo(Const.CANT_NULL);
-            //태그 추가할 때 null로 추가하면 안 된다.
+            //태그 추가할 때 null이거나 빈 칸일 때는 수정하면 안된다.
         } else if(mapper.selMealTags(dto.getImeal()).size()==Const.TAG_MAX){
             //해당 일지의 태그가 최대 갯수(5)만큼 있을 경우 추가 불가
             return new ResVo(Const.MANY_TAG);
@@ -150,7 +166,8 @@ public class MealService{
     }
     //일지 태그 수정
     public ResVo updMealTag(MealTagUpdDto dto){
-        if(dto.getTag()==null||dto.getTag().equals("")){
+        if(dto.getTag()==null||dto.getTag().equals("")
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getTag())){
             return new ResVo(Const.CANT_NULL);
             //태그가 null이거나 빈 칸일 때는 수정하면 안된다.
         } else if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, dto.getTag())){
@@ -162,7 +179,8 @@ public class MealService{
     //일지 사진 추가
     public ResVo postMealPic(MealPicInsDto dto){
         Integer targetImeal= mapper.selMealByImeal(dto.getImeal());//해당 일지가 있는지 확인
-        if(targetImeal==null||dto.getPic()==null||dto.getPic().equals("")){
+        if(targetImeal==null||dto.getPic()==null||dto.getPic().equals("")
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getPic())){
             //해당 일지가 존재하지 않거나 입력받은 사진이 null이거나 빈 칸일 때
             return new ResVo(Const.NO_EXIST);
         } else if(mapper.selMealPics(dto.getImeal()).size()==Const.PIC_MAX){
@@ -182,7 +200,8 @@ public class MealService{
     }
     //일지 사진 수정
     public ResVo updMealPic(MealPicUpdDto dto){
-        if(dto.getPic()==null||dto.getPic().equals("")){
+        if(dto.getPic()==null||dto.getPic().equals("")
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getPic())){
             return new ResVo(Const.CANT_NULL);
         }//입력받은 사진이 없거나 빈 칸일 때
         return new ResVo(mapper.updMealPic(dto));

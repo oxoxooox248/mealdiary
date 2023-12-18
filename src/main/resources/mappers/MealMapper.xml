@@ -83,7 +83,7 @@
     <insert id="insMealPics">
         INSERT INTO
         t_meal_pic
-        (imeal, pic)
+            (imeal, pic)
         VALUES
         <foreach collection="pics" item="pic" separator=",">
             (#{imeal}, #{pic})
@@ -93,7 +93,7 @@
     <insert id="insMealTags">
         INSERT INTO
         t_meal_tag
-        (imeal, tag)
+            (imeal, tag)
         VALUES
         <foreach collection="tags" item="tag" separator=",">
             (#{imeal}, #{tag})
@@ -102,26 +102,26 @@
     <!--일지 삭제1-->
     <select id="selMealByImeal">
         SELECT
-        imeal
+            imeal
         FROM t_meal
         WHERE imeal= #{imeal}
     </select>
     <!--일지 삭제2-->
     <delete id="delMealPicByImeal">
-        DELETE FROM
-        t_meal_pic
+        DELETE
+        FROM t_meal_pic
         WHERE imeal= #{imeal}
     </delete>
     <!--일지 삭제3-->
     <delete id="delMealTagByImeal">
-        DELETE FROM
-        t_meal_tag
+        DELETE
+        FROM t_meal_tag
         WHERE imeal= #{imeal}
     </delete>
     <!--일지 삭제4-->
     <delete id="delMeal">
-        DELETE FROM
-        t_meal
+        DELETE
+        FROM t_meal
         WHERE imeal= #{imeal}
     </delete>
     <!--일지 태그 추가-->
@@ -134,8 +134,8 @@
     </insert>
     <!--일지 태그 삭제-->
     <delete id="delMealTag">
-        DELETE FROM
-        t_meal_tag
+        DELETE
+        FROM t_meal_tag
         WHERE itag= #{itag}
     </delete>
     <!--일지 태그 수정-->
@@ -143,7 +143,7 @@
         UPDATE
         t_meal_tag
         SET
-        tag= #{tag}
+            tag= #{tag}
         WHERE itag= #{itag}
     </update>
     <!--일지 사진 추가-->
@@ -156,8 +156,8 @@
     </insert>
     <!--일지 사진 삭제-->
     <delete id="delMealPic">
-        DELETE FROM
-        t_meal_pic
+        DELETE
+        FROM t_meal_pic
         WHERE ipic= #{ipic}
     </delete>
     <!--일지 사진 수정-->
@@ -165,13 +165,13 @@
         UPDATE
         t_meal_pic
         SET
-        pic= #{pic}
+            pic= #{pic}
         WHERE ipic= #{ipic}
     </update>
     <!--북마크 온오프 전 확인-->
     <select id="selBookmark">
         SELECT
-        bookmark
+            bookmark
         FROM t_meal
         WHERE imeal= #{imeal}
     </select>
@@ -180,7 +180,7 @@
         UPDATE
         t_meal
         SET
-        bookmark= 1
+            bookmark= 1
         WHERE imeal= #{imeal}
     </update>
     <!--북마크OFF-->
@@ -188,7 +188,7 @@
         UPDATE
         t_meal
         SET
-        bookmark= 0
+            bookmark= 0
         WHERE imeal= #{imeal}
     </update>
     <!--일지 상세 정보1-->
@@ -207,14 +207,14 @@
     <!--일지 상세 정보2-->
     <select id="selMealPics">
         SELECT
-        pic
+            pic
         FROM t_meal_pic
         WHERE imeal= #{imeal}
     </select>
     <!--일지 상세 정보3-->
     <select id="selMealTags">
         SELECT
-        tag
+            tag
         FROM t_meal_tag
         WHERE imeal= #{imeal}
     </select>
