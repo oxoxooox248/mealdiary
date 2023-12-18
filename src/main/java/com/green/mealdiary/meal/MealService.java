@@ -72,7 +72,7 @@ public class MealService{
                 }//MealPicSelVo에 있는 사진들을 MealSelVo에 있는 pics(List<String>)에 추가한다
                 List<MealTagSelVo> tagList= mapper.selMealTagByImealList(imealList);
             //위의 사진들을 MealSelVo에 있는 pics(List<String>)에 넣는 방법과 동일하지만
-            //일지의 태그는 0개일 수 있다는 차이가 있다(tagList.size()=0)
+            //일지의 태그는 0개일 수 있다는 차이가 있다
                 for(MealTagSelVo vo: tagList){
                     mealMap.get(vo.getImeal()).getTags().add(vo.getTag());
                 }
@@ -84,10 +84,13 @@ public class MealService{
     public ResVo putMeal(MealUpdDto dto){
         if(dto.getTitle()==null
                 ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getTitle())
+                ||dto.getTitle().equals("")
                 ||dto.getIngredient()==null
                 ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getIngredient())
+                ||dto.getIngredient().equals("")
                 ||dto.getRecipe()==null
-                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getRecipe())){
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getRecipe())
+                ||dto.getRecipe().equals("")){
             return new ResVo(Const.CANT_NULL);
         }//제목, 재료, 레시피는 반드시 입력 받아야 한다
         return new ResVo(mapper.updMeal(dto));//(0): 수정이 실행 안됨, (1): 수정 완료
@@ -109,10 +112,13 @@ public class MealService{
             return new ResVo(Const.MANY_TAG);//등록된 태그가 최대 갯수를 초과했다
         } else if(dto.getTitle()==null
                 ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getTitle())
+                ||dto.getTitle().equals("")
                 ||dto.getIngredient()==null
                 ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getIngredient())
+                ||dto.getIngredient().equals("")
                 ||dto.getRecipe()==null
-                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getRecipe())){
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getRecipe())
+                ||dto.getRecipe().equals("")){
             return new ResVo(Const.CANT_NULL);//제목, 재료, 레시피는 반드시 입력 받아야 한다
         } else if(dto.getTags()!=null) {
             for (String tag : dto.getTags()) {
@@ -151,7 +157,7 @@ public class MealService{
                 ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getTag())){
             return new ResVo(Const.CANT_NULL);
             //태그 추가할 때 null이거나 빈 칸일 때는 수정하면 안된다.
-        } else if(mapper.selMealTags(dto.getImeal()).size()==Const.TAG_MAX){
+        } else if(mapper.selMealTags(dto.getImeal()).size()>=Const.TAG_MAX){
             //해당 일지의 태그가 최대 갯수(5)만큼 있을 경우 추가 불가
             return new ResVo(Const.MANY_TAG);
         } else if(!Pattern.matches(Const.REGEXP_PATTERN_CHAR, dto.getTag())){
@@ -183,7 +189,7 @@ public class MealService{
                 ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR,dto.getPic())){
             //해당 일지가 존재하지 않거나 입력받은 사진이 null이거나 빈 칸일 때
             return new ResVo(Const.NO_EXIST);
-        } else if(mapper.selMealPics(dto.getImeal()).size()==Const.PIC_MAX){
+        } else if(mapper.selMealPics(dto.getImeal()).size()>=Const.PIC_MAX){
             //해당 일지의 사진이 최대 갯수(3)만큼 있을 경우 추가 불가
             return new ResVo(Const.MANY_PIC);
         }
