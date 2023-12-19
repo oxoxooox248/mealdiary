@@ -20,28 +20,32 @@ public class MealService{
 
     //일지 리스트(검색, 북마크 포함)
     public List<MealSelVo> getMeal(MealSelDto dto){
-        if(Utils.nullCheck(dto.getSearch())){//검색어를 입력받았을 때(빈 칸 제외)
+        if(!Utils.nullCheck(dto.getSearch())){//검색어를 입력받았을 때(빈 칸 제외)
             if(dto.getSearch().length()>Const.SEARCH_MAX){//검색어가 10자를 넘어가면
                 List<MealSelVo> mealList= new ArrayList();
                 MealSelVo vo= new MealSelVo();
                 vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
                 mealList.add(vo);
                 return mealList;
-            } else if(dto.getSearch().substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
+            }
+            else if(dto.getSearch().substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
                 dto.setSearchText(Const.HASH_SIGN);//searchText= "#"
                 if(Utils.formCheck(dto.getSearch().substring(1))){
                 //#뒤에 띄어쓰기나 특수문자 없으면
                 dto.setSearch2(String.format("%%%s%%",dto.getSearch().substring(1)));//search2= "%찌개%" > 태그 검색
-                } else { //#뒤에 띄어쓰기나 특수문자 있으면
+                }
+                else{ //#뒤에 띄어쓰기나 특수문자 있으면
                     List<MealSelVo> mealList= new ArrayList();
                     MealSelVo vo= new MealSelVo();
                     vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
                     mealList.add(vo);
                     return mealList;
                 }
-            } else if(Utils.formCheck(dto.getSearch())){//검색어에 띄어쓰기나 특수문자 없으면
+            }
+            else if(Utils.formCheck(dto.getSearch())){//검색어에 띄어쓰기나 특수문자 없으면
                 dto.setSearch2(String.format("%%%s%%",dto.getSearch()));//search2= "%찌개%" > 제목 검색
-            } else {
+            }
+            else{
                 List<MealSelVo> mealList= new ArrayList();
                 MealSelVo vo= new MealSelVo();
                 vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
@@ -82,15 +86,9 @@ public class MealService{
     }
     //일지 수정(사진, 태그 제외)
     public ResVo putMeal(MealUpdDto dto){
-        if(Utils.nullCheck(dto.getTitle())
-                ||Utils.onlySpace(dto.getTitle())
-                ||Utils.blankCheck(dto.getTitle())
-                ||Utils.nullCheck(dto.getIngredient())
-                ||Utils.onlySpace(dto.getIngredient())
-                ||Utils.blankCheck(dto.getIngredient())
-                ||Utils.nullCheck(dto.getRecipe())
-                ||Utils.onlySpace(dto.getRecipe())
-                ||Utils.blankCheck(dto.getRecipe())){
+        if(Utils.allCheck(dto.getTitle())
+                ||Utils.allCheck(dto.getIngredient())
+                ||Utils.allCheck(dto.getRecipe())){
             return new ResVo(Const.CANT_NULL);
         }//제목, 재료, 레시피는 반드시 입력 받아야 한다
         return new ResVo(mapper.updMeal(dto));//(0): 수정이 실행 안됨, (1): 수정 완료
@@ -99,8 +97,9 @@ public class MealService{
     public ResVo postMeal(MealInsDto dto){
         if(Utils.nullCheck(dto.getPics())){//등록된 사진이 없다
             return new ResVo(Const.NO_PIC);
-        } else if(!Utils.nullCheck(dto.getPics())){
-            for (String pic : dto.getPics()) {
+        }
+        else if(!Utils.nullCheck(dto.getPics())){
+            for (String pic : dto.getPics()){
                 if(Utils.onlySpace(pic)
                         ||Utils.blankCheck(pic)){
                     return new ResVo(Const.ABNORMAL_PIC_FORM);
@@ -109,26 +108,20 @@ public class MealService{
             if(dto.getPics().size()>Const.PIC_MAX){//등록된 사진이 최대 갯수를 초과했다
                 return new ResVo(Const.MANY_PIC);
             }
-        } else if(!Utils.nullCheck(dto.getTags())) {
+        }
+        else if(!Utils.nullCheck(dto.getTags())){
             if(dto.getTags().size()>Const.TAG_MAX){
             return new ResVo(Const.MANY_TAG);
             }//등록된 태그가 최대 갯수를 초과했다
-            for (String tag : dto.getTags()) {
-                if(!Utils.formCheck(tag)
-                        ||Utils.onlySpace(tag)
-                        ||Utils.blankCheck(tag)){
+            for (String tag : dto.getTags()){
+                if(Utils.tagCheck(tag)){
                     return new ResVo(Const.ABNORMAL_TAG_FORM);
                 }//태그에 빈 칸이거나 띄어쓰기 혹은 특수문자가 들어가면 안 된다
             }
-        } else if(Utils.nullCheck(dto.getTitle())
-                ||Utils.onlySpace(dto.getTitle())
-                ||Utils.blankCheck(dto.getTitle())
-                ||Utils.nullCheck(dto.getIngredient())
-                ||Utils.onlySpace(dto.getIngredient())
-                ||Utils.blankCheck(dto.getIngredient())
-                ||Utils.nullCheck(dto.getRecipe())
-                ||Utils.onlySpace(dto.getRecipe())
-                ||Utils.blankCheck(dto.getRecipe())){
+        }
+        else if(Utils.allCheck(dto.getTitle())
+                ||Utils.allCheck(dto.getIngredient())
+                ||Utils.allCheck(dto.getRecipe())){
             return new ResVo(Const.CANT_NULL);//제목, 재료, 레시피는 반드시 입력 받아야 한다
         }
         int affectedMeal= mapper.insMeal(dto);//일지 등록 실행
@@ -155,15 +148,15 @@ public class MealService{
     }
     //일지 태그 추가
     public ResVo postMealTag(MealTagInsDto dto){
-        if(Utils.nullCheck(dto.getTag())
-                ||Utils.blankCheck(dto.getTag())
-                ||Utils.onlySpace(dto.getTag())){
+        if(Utils.allCheck(dto.getTag())){
             return new ResVo(Const.CANT_NULL);
             //태그 추가할 때 null이거나 빈 칸일 때는 수정하면 안된다.
-        } else if(mapper.selMealTags(dto.getImeal()).size()>=Const.TAG_MAX){
+        }
+        else if(mapper.selMealTags(dto.getImeal()).size()>=Const.TAG_MAX){
             //해당 일지의 태그가 최대 갯수(5)만큼 있을 경우 추가 불가
             return new ResVo(Const.MANY_TAG);
-        } else if(!Utils.formCheck(dto.getTag())){
+        }
+        else if(!Utils.formCheck(dto.getTag())){
             //태그에 띄어쓰기나 특수문자가 들어가면 안 된다
             return new ResVo(Const.ABNORMAL_TAG_FORM);
         }
@@ -175,12 +168,11 @@ public class MealService{
     }
     //일지 태그 수정
     public ResVo updMealTag(MealTagUpdDto dto){
-        if(Utils.nullCheck(dto.getTag())
-                ||Utils.blankCheck(dto.getTag())
-                ||Utils.onlySpace(dto.getTag())){
+        if(Utils.allCheck(dto.getTag())){
             return new ResVo(Const.CANT_NULL);
             //태그가 null이거나 빈 칸일 때는 수정하면 안된다.
-        } else if(!Utils.formCheck(dto.getTag())){
+        }
+        else if(!Utils.formCheck(dto.getTag())){
             //태그에 띄어쓰기나 특수문자가 들어가면 안 된다
             return new ResVo(Const.ABNORMAL_TAG_FORM);
         }
@@ -190,12 +182,11 @@ public class MealService{
     public ResVo postMealPic(MealPicInsDto dto){
         Integer targetImeal= mapper.selMealByImeal(dto.getImeal());//해당 일지가 있는지 확인
         if(Utils.nullCheck(targetImeal)
-                ||Utils.nullCheck(dto.getPic())
-                ||Utils.blankCheck(dto.getPic())
-                ||Utils.onlySpace(dto.getPic())){
+                ||Utils.allCheck(dto.getPic())){
             //해당 일지가 존재하지 않거나 입력받은 사진이 null이거나 빈 칸일 때
             return new ResVo(Const.NO_EXIST);
-        } else if(mapper.selMealPics(dto.getImeal()).size()>=Const.PIC_MAX){
+        }
+        else if(mapper.selMealPics(dto.getImeal()).size()>=Const.PIC_MAX){
             //해당 일지의 사진이 최대 갯수(3)만큼 있을 경우 추가 불가
             return new ResVo(Const.MANY_PIC);
         }
@@ -203,8 +194,8 @@ public class MealService{
     }
     //일지 사진 삭제
     public ResVo delMealPic(MealPicDelDto dto){
-        if(dto.getImeal()==Const.ZERO||
-                mapper.selMealPics(dto.getImeal()).size()<=Const.PIC_MIN){
+        if(dto.getImeal()==Const.ZERO
+                ||mapper.selMealPics(dto.getImeal()).size()<=Const.PIC_MIN){
             return new ResVo(Const.FAIL);
         }
         //해당 일지가 존재하지 않거나 사진이 최소 갯수(1)만큼 있을 경우 삭제 불가
@@ -212,9 +203,7 @@ public class MealService{
     }
     //일지 사진 수정
     public ResVo updMealPic(MealPicUpdDto dto){
-        if(Utils.nullCheck(dto.getPic())
-                ||Utils.blankCheck(dto.getPic())
-                ||Utils.onlySpace(dto.getPic())){
+        if(Utils.allCheck(dto.getPic())){
             return new ResVo(Const.CANT_NULL);
         }//입력받은 사진이 없거나 빈 칸일 때
         return new ResVo(mapper.updMealPic(dto));
