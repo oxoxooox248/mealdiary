@@ -28,7 +28,7 @@ public class MealService{
                 mealList.add(vo);
                 return mealList;
             }
-            else if(dto.getSearch().substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
+            if(dto.getSearch().substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
                 dto.setSearchText(Const.HASH_SIGN);//searchText= "#"
                 if(Utils.formCheck(dto.getSearch().substring(1))){
                 //#뒤에 띄어쓰기나 특수문자 없으면
@@ -42,7 +42,7 @@ public class MealService{
                     return mealList;
                 }
             }
-            else if(Utils.formCheck(dto.getSearch())){//검색어에 띄어쓰기나 특수문자 없으면
+            if(Utils.formCheck(dto.getSearch())){//검색어에 띄어쓰기나 특수문자 없으면
                 dto.setSearch2(String.format("%%%s%%",dto.getSearch()));//search2= "%찌개%" > 제목 검색
             }
             else{
