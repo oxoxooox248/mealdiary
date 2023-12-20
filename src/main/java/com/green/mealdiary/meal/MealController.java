@@ -20,7 +20,7 @@ public class MealController {
     private final MealService service;
 
     @GetMapping
-    @Operation(summary ="첫 화면", description = "첫 메인 화면 처리" +
+    @Operation(summary ="일지 리스트", description = "일지 리스트 처리" +
             "<br>page: 페이지(디폴트 값=1),row_count: 페이지 당 일지 갯수(디폴트 값=4)," +
             "<br>bookmark: 북마크 여부(0:모든 일지, 1:북마크 있는 일지만)(디폴트 값=0), " +
             "<br>search: 검색어(제목, 태그(#으로 시작))" +

@@ -12,7 +12,7 @@
         FROM t_meal A
         <if test="search2!=null">
             <choose>
-                <when test="searchText!=null">
+                <when test="existHashSign">
                     JOIN t_meal_tag B
                     ON A.imeal= B.imeal
                     WHERE B.tag LIKE #{search2} <!--like "%찌개%"-->
@@ -168,39 +168,33 @@
             pic= #{pic}
         WHERE ipic= #{ipic}
     </update>
-    <!--북마크 온오프 전 확인-->
-    <select id="selBookmark">
-        SELECT
-            bookmark
-        FROM t_meal
-        WHERE imeal= #{imeal}
-    </select>
-    <!--북마크ON-->
-    <update id="bookmarkOn">
+    <!--북마크 온오프-->
+    <update id="toggleBookmark">
+        <selectKey resultType="int" keyProperty="bookmark" order="BEFORE">
+            SELECT
+                bookmark
+            FROM t_meal
+            where imeal= #{imeal}
+        </selectKey>
         UPDATE
         t_meal
         SET
-            bookmark= 1
-        WHERE imeal= #{imeal}
-    </update>
-    <!--북마크OFF-->
-    <update id="bookmarkOff">
-        UPDATE
-        t_meal
-        SET
-            bookmark= 0
+        <choose>
+            <when test="bookmark==1">
+                bookmark= 0
+            </when>
+            <otherwise>
+                bookmark= 1
+            </otherwise>
+        </choose>
         WHERE imeal= #{imeal}
     </update>
     <!--일지 상세 정보1-->
     <select id="selDetail">
         SELECT
-            imeal,
-            title,
             ingredient,
             recipe,
-            review,
-            bookmark,
-            created_at as createdAt
+            bookmark
         FROM t_meal
         WHERE imeal= #{imeal}
     </select>
