@@ -23,14 +23,14 @@ public class UserController {
     @Operation(summary ="회원가입", description = "회원가입 처리" +
             "<br>uid: 아이디, upw: 비밀번호, nm: 이름, pic: 프로필 사진" +
             "<br>(result(0): 실패, (1) 성공)" )
-    public ResVo signup(@RequestBody @Valid UserSignupDto dto){
+    public ResVo signup(@RequestBody UserSignupDto dto){
         return service.signup(dto);
     }
     @PostMapping("/signin")
     @Operation(summary ="로그인", description = "로그인 처리" +
             "<br>uid: 아이디, upw: 비밀번호" +
             "<br>(result(1): 로그인 성공, (2): 아이디 없음, (3): 비밀번호 틀림)" )
-    public ResVo signin(@RequestBody @Valid UserSigninDto dto){
+    public ResVo signin(@RequestBody UserSigninDto dto){
         return service.signin(dto);
     }
 }

@@ -12,32 +12,14 @@ public class Utils{
     //onlySpace는 스페이스만 있으면 true
     //blankCheck는 크기 0인 문자열이면 true
     //formCheck는 특수문자나 띄어쓰기가 있으면 true
-    public static boolean nullCheck(Integer value){
-        return value==null;
-    }
-    public static boolean nullCheck(String... str){
-        return str==null;
-    }
-    public static boolean nullCheck(List... list){
-        return list==null;
-    }
-    public static boolean onlySpace(String str){
-        return Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR, str);
-    }
     public static boolean formCheck(String str){
         return Pattern.matches(Const.REGEXP_PATTERN_CHAR, str);
-    }
-    public static boolean blankCheck(String str){
-        return str.equals("");
-    }
-    public static boolean allCheck(String str){
-        return nullCheck(str)||onlySpace(str)||blankCheck(str);
-    }//문자열이 null 혹은 빈 칸인지 체크(null 혹은 빈 칸이면 true)
-    public static boolean allCheck(String str1, String str2, String str3){
-        return allCheck(str1)||allCheck(str2)||allCheck(str3);
-    }
+    }//한글,영어,숫자 허용& 띄어쓰기, 특수문자 불가
+    public static boolean isEmpty(String str){
+        return str.equals("")
+                ||Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR, str);}
     public static boolean tagCheck(String tag){
-        return !formCheck(tag)||onlySpace(tag)||blankCheck(tag);
+        return !formCheck(tag)||isEmpty(tag);
     }//태그에 특수문자 혹흔 띄어쓰기가 있거나 공백만 있으면 안된다.
     //특수문자 혹흔 띄어쓰기가 있거나 공백만 있으면 true
     public static boolean tagListCheck(List<String> tagList){
@@ -50,8 +32,7 @@ public class Utils{
     }
     public static boolean picListCheck(List<String> picList){
         for (String pic : picList){
-            if(onlySpace(pic)
-                    ||blankCheck(pic)){
+            if(isEmpty(pic)){
                 return true;
             }//사진이 빈 칸이면 안 된다
         }
@@ -61,6 +42,13 @@ public class Utils{
         List<MealSelVo> list= new ArrayList();
         MealSelVo vo= new MealSelVo();
         vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
+        list.add(vo);
+        return list;
+    }
+    public static List<MealSelVo> abnormalForm(){
+        List<MealSelVo> list= new ArrayList();
+        MealSelVo vo= new MealSelVo();
+        vo.setResult(Const.ABNORMAL_FORM);//비정상적인 검색어 형식
         list.add(vo);
         return list;
     }

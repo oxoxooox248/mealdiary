@@ -22,6 +22,7 @@ public class Const {
     //한글,영어,숫자만 허용(띄어쓰기, 특수문자 사용 불가)
     public static final String REGEXP_PATTERN_SPACE_CHAR = "^[\\s]*$";
     //스페이스와 탭만 존재하는 문자열
+    public static final int ABNORMAL_FORM= 0;
     public static final int ABNORMAL_SEARCH_FORM= -1;
     public static final int SEARCH_MAX= 10;
     public static final String HASH_SIGN= "#";
