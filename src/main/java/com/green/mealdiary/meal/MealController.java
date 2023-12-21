@@ -38,7 +38,7 @@ public class MealController {
             dto.setRowCount(rowCount);//페이지 당 일지 갯수
             dto.setPage(page);//페이지
             dto.setBookmark(bookmark);//북마크 검색(0:모든 일지, 1: 책갈피 설정한 일지만)
-            if(search!=null && !search.equals("")){//검색어를 받았을 때
+            if(!Utils.allCheck(search)){//검색어를 받았을 때
                 dto.setSearch(search);
             }
             return service.getMeal(dto);

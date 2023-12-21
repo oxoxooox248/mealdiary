@@ -57,11 +57,11 @@ public class Utils{
         }
         return false;
     }
-    public static List<MealSelVo> abnoramlSearchForm(){
-        List<MealSelVo> mealList= new ArrayList();
+    public static List<MealSelVo> abnormalSearchForm(){
+        List<MealSelVo> list= new ArrayList();
         MealSelVo vo= new MealSelVo();
         vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
-        mealList.add(vo);
-        return mealList;
+        list.add(vo);
+        return list;
     }
 }
