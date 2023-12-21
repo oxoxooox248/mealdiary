@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MealTagUpdDto {
-    private int itag;
     private String tag;
+    private int itag;
 }

@@ -25,4 +25,6 @@ public class Const {
     public static final int ABNORMAL_SEARCH_FORM= -1;
     public static final int SEARCH_MAX= 10;
     public static final String HASH_SIGN= "#";
+    public static final int LOGIN_NO_ID= 2;
+    public static final int LOGIN_DIFF_PW= 3;
 }
