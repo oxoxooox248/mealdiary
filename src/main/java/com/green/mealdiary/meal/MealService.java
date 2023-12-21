@@ -86,10 +86,37 @@ public class MealService{
     }
     //일지 수정(사진, 태그 제외)
     public ResVo putMeal(MealUpdDto dto){
-        if(Utils.allCheck(dto.getTitle(),dto.getIngredient(),dto.getRecipe())){
-            return new ResVo(Const.CANT_NULL);
-        }//제목, 재료, 레시피는 반드시 입력 받아야 한다
-        return new ResVo(mapper.updMeal(dto));//(0): 수정이 실행 안됨, (1): 수정 완료
+        Integer check=mapper.selMealByImeal(dto.getImeal());
+        if(Utils.nullCheck(check)){return new ResVo(Const.NO_EXIST);}
+        mapper.updMeal(dto);
+        if(!Utils.nullCheck(dto.getPics())&&!dto.getPics().isEmpty()) {
+            List<Integer> ipicList = mapper.selIpics(dto.getImeal());
+            //ipicList= {10, 15, 39}
+            List<MealPicUpdDto> picDtoList = new ArrayList();
+            for (int i =0;i<dto.getPics().size(); i++) {
+                MealPicUpdDto pDto = new MealPicUpdDto();
+                int ipic = ipicList.get(dto.getPicIdx().get(i));
+                pDto.setIpic(ipic);
+                pDto.setPic(dto.getPics().get(i));
+                picDtoList.add(pDto);
+            }
+            for (MealPicUpdDto pDto : picDtoList) {
+                mapper.updMealPics(pDto);
+            }
+        }
+        List<Integer> itagList= mapper.selItags(dto.getImeal());
+        List<MealTagUpdDto> tagDtoList= new ArrayList();
+        for(int i=0;i<dto.getTags().size(); i++){
+            MealTagUpdDto tDto= new MealTagUpdDto();
+            int itag= itagList.get(dto.getTagIdx().get(i));
+            tDto.setItag(itag);
+            tDto.setTag(dto.getTags().get(i));
+            tagDtoList.add(tDto);
+        }
+        for(MealTagUpdDto tDto: tagDtoList){
+            mapper.updMealTags(tDto);
+        }
+        return new ResVo(Const.SUCCESS);
     }
     //일지 작성
     public ResVo postMeal(MealInsDto dto){
@@ -159,18 +186,6 @@ public class MealService{
     public ResVo delMealTag(int itag){
         return new ResVo(mapper.delMealTag(itag));
     }
-    //일지 태그 수정
-    public ResVo updMealTag(MealTagUpdDto dto){
-        if(Utils.allCheck(dto.getTag())){
-            return new ResVo(Const.CANT_NULL);
-            //태그가 null이거나 빈 칸일 때는 수정하면 안된다.
-        }
-        else if(!Utils.formCheck(dto.getTag())){
-            //태그에 띄어쓰기나 특수문자가 들어가면 안 된다
-            return new ResVo(Const.ABNORMAL_TAG_FORM);
-        }
-        return new ResVo(mapper.updMealTag(dto));//태그 수정 실행
-    }
     //일지 사진 추가
     public ResVo postMealPic(MealPicInsDto dto){
         Integer targetImeal= mapper.selMealByImeal(dto.getImeal());//해당 일지가 있는지 확인
@@ -194,13 +209,6 @@ public class MealService{
         //해당 일지가 존재하지 않거나 사진이 최소 갯수(1)만큼 있을 경우 삭제 불가
         return new ResVo(mapper.delMealPic(dto.getIpic()));//사진 삭제 실행
     }
-    //일지 사진 수정
-    public ResVo updMealPic(MealPicUpdDto dto){
-        if(Utils.allCheck(dto.getPic())){
-            return new ResVo(Const.CANT_NULL);
-        }//입력받은 사진이 없거나 빈 칸일 때
-        return new ResVo(mapper.updMealPic(dto));
-    }
     //북마크 온오프
     public ResVo toggleBookmark(int imeal){
         Integer check=mapper.selMealByImeal(imeal);
@@ -217,6 +225,10 @@ public class MealService{
     public MealSelDetailVo getDetail(int imeal){
         MealSelDetailVo vo= mapper.selDetail(imeal);//해당 일지의 상세 정보(재료, 레시피 포함)
         if(vo==null){return new MealSelDetailVo();}//비어있는 객체 리턴
+        List<String> picList= mapper.selMealPics(imeal);
+        List<String> tagList= mapper.selMealTags(imeal);
+        vo.setPics(picList);
+        vo.setTags(tagList);
         return vo;
     }
 }

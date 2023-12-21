@@ -16,8 +16,8 @@ public class Utils{
     public static boolean nullCheck(String... str){
         return str==null;
     }
-    public static boolean nullCheck(List<String> strList){
-        return strList==null;
+    public static boolean nullCheck(List... list){
+        return list==null;
     }
     public static boolean onlySpace(String str){
         return Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR, str);

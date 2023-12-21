@@ -11,4 +11,8 @@ public class MealUpdDto {//일지 변경
     private String ingredient;//재료
     private String recipe;//레시피
     private String review;//후기
+    private List<Integer> picIdx;
+    private List<String> pics;
+    private List<Integer> tagIdx;
+    private List<String> tags;
 }

@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class MealSelDto {
+
     private int page;//페이지
     @JsonIgnore
     private int startIdx;// 시작 인덱스 넘버

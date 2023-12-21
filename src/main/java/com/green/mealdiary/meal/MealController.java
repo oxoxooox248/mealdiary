@@ -4,6 +4,7 @@ import com.green.mealdiary.common.*;
 import com.green.mealdiary.meal.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,7 @@ public class MealController {
             "<br>(-3): 태그 갯수 초과, (-4): 입력받은 제목, 재료, 타이틀이 없습니다," +
             "<br>(-5): 태그에 띄워쓰기와 특수문자가 있습니다, (-6): 비정상적인 사진 등록" +
             "<br>(-7): 비정상적인 태그 등록)")
-    public ResVo postMeal(@RequestBody MealInsDto dto){
+    public ResVo postMeal(@RequestBody @Valid MealInsDto dto){
         return service.postMeal(dto);
     }
 
@@ -81,14 +82,6 @@ public class MealController {
             "<br>(result(0): 실패(태그가 없을 때), (1): 성공)")
     public ResVo delMealTag(int itag) {return service.delMealTag(itag);}
 
-    @PatchMapping("/tag")
-    @Operation(summary = "일지 태그 수정", description = "일지 태그 수정 처리" +
-            "<br>itag:태그pk, tag:수정할 태그" +
-            "<br>(result(0): 실패, (1): 성공," +
-            "<br>(-4): 입력된 태그가 없습니다, (-5):태그에 띄워쓰기와 특수문자가 있습니다.)")
-    public ResVo updMealTag(@RequestBody MealTagUpdDto dto){
-        return service.updMealTag(dto);
-    }
 
     @PostMapping("/pic")
     @Operation(summary = "일지 사진 추가", description = "일지 사진 추가 처리" +
@@ -106,13 +99,7 @@ public class MealController {
             "<br>해당 일지는 없는 일지 입니다)")
     public ResVo delMealPic(MealPicDelDto dto) {return service.delMealPic(dto);}
 
-    @PatchMapping("/pic")
-    @Operation(summary = "일지 사진 수정", description = "일지 수정 처리" +
-            "<br>ipic: 사진pk, pic: 수정할 사진" +
-            "<br>(result(0): 실패, (1): 성공, (-4): 입력된 사진이 없습니다.)")
-    public ResVo updMealPic(@RequestBody MealPicUpdDto dto){
-        return service.updMealPic(dto);
-    }
+
 
     @PostMapping("/bookmark")
     @Operation(summary = "책갈피 표시/해제", description = "북마크 on/off 토글로 처리" +
