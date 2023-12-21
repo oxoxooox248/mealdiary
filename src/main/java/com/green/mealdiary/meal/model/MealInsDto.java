@@ -22,5 +22,6 @@ public class MealInsDto {
     private String review;//리뷰
     @NotNull
     private List<String> pics;//사진(1~3)
+
     private List<String> tags;//태그(~5)
 }

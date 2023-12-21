@@ -12,15 +12,6 @@ public class Utils{
     //onlySpace는 스페이스만 있으면 true
     //blankCheck는 크기 0인 문자열이면 true
     //formCheck는 특수문자나 띄어쓰기가 있으면 true
-    public static boolean nullCheck(Integer value){
-        return value==null;
-    }
-    public static boolean nullCheck(String... str){
-        return str==null;
-    }
-    public static boolean nullCheck(List... list){
-        return list==null;
-    }
     public static boolean onlySpace(String str){
         return Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR, str);
     }
@@ -29,12 +20,6 @@ public class Utils{
     }
     public static boolean blankCheck(String str){
         return str.equals("");
-    }
-    public static boolean allCheck(String str){
-        return nullCheck(str)||onlySpace(str)||blankCheck(str);
-    }//문자열이 null 혹은 빈 칸인지 체크(null 혹은 빈 칸이면 true)
-    public static boolean allCheck(String str1, String str2, String str3){
-        return allCheck(str1)||allCheck(str2)||allCheck(str3);
     }
     public static boolean tagCheck(String tag){
         return !formCheck(tag)||onlySpace(tag)||blankCheck(tag);
