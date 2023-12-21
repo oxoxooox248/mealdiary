@@ -2,6 +2,8 @@ package com.green.mealdiary.meal.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.green.mealdiary.common.Const;
+import com.green.mealdiary.common.Utils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -26,7 +28,20 @@ public class MealSelDto {
         this.startIdx= (page-1)*this.rowCount;
     }
     //page와 rowCount를 이용하여 startIdx를 구한다.
+    public void setSearch2(String search){
+        if(search.substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
+            this.existHashSign=true;
+            if(Utils.formCheck(search.substring(1))){
+            //#뒤에 띄어쓰기나 특수문자 없으면
+                this.search2=String.format("%%%s%%",search.substring(1));//search2= "%찌개%" > 태그 검색
+            }
+            //#뒤에 띄어쓰기나 특수문자 있으면
+        }
+        if(Utils.formCheck(search)){
+        //검색어에 띄어쓰기나 특수문자 없으면
+           this.search2=String.format("%%%s%%",search);//search2= "%찌개%" > 제목 검색
+        }
+        //비정상적인 검색어 형식
 
-
-
+    }
 }

@@ -22,33 +22,11 @@ public class MealService{
     public List<MealSelVo> getMeal(MealSelDto dto){
         if(!Utils.nullCheck(dto.getSearch())){//검색어를 입력받았을 때(빈 칸 제외)
             if(dto.getSearch().length()>Const.SEARCH_MAX){//검색어가 10자를 넘어가면
-                List<MealSelVo> mealList= new ArrayList();
-                MealSelVo vo= new MealSelVo();
-                vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
-                mealList.add(vo);
-                return mealList;
+                return Utils.abnormalSearchForm();
             }
-            if(dto.getSearch().substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
-                dto.setExistHashSign(true);
-                if(Utils.formCheck(dto.getSearch().substring(1))){
-                //#뒤에 띄어쓰기나 특수문자 없으면
-                dto.setSearch2(String.format("%%%s%%",dto.getSearch().substring(1)));//search2= "%찌개%" > 태그 검색
-                } else{ //#뒤에 띄어쓰기나 특수문자 있으면
-                    List<MealSelVo> mealList= new ArrayList();
-                    MealSelVo vo= new MealSelVo();
-                    vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
-                    mealList.add(vo);
-                    return mealList;
-                }
-            }
-            if(Utils.formCheck(dto.getSearch())){//검색어에 띄어쓰기나 특수문자 없으면
-                dto.setSearch2(String.format("%%%s%%",dto.getSearch()));//search2= "%찌개%" > 제목 검색
-            } else{
-                List<MealSelVo> mealList= new ArrayList();
-                MealSelVo vo= new MealSelVo();
-                vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
-                mealList.add(vo);
-                return mealList;
+            dto.setSearch2(dto.getSearch());
+            if(Utils.nullCheck(dto.getSearch2())){
+                return Utils.abnormalSearchForm();
             }
         }
         List<MealSelVo> mealList= mapper.selMeal(dto);//일지 리스트1 (1,2,3,4)
