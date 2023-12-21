@@ -45,11 +45,16 @@ public class Utils{
         list.add(vo);
         return list;
     }
-    public static List<MealSelVo> abnormalForm(){
+    public static List<MealSelVo> abnormalValue(){
         List<MealSelVo> list= new ArrayList();
         MealSelVo vo= new MealSelVo();
         vo.setResult(Const.ABNORMAL_FORM);//비정상적인 검색어 형식
         list.add(vo);
         return list;
+    }
+    public static boolean normalValue(int rowCount, int page, int bookmark){
+        return (rowCount == 0 || rowCount == 4)
+                && page > 0
+                && (bookmark == 0 || bookmark == 1);
     }
 }
