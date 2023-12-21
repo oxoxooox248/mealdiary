@@ -42,6 +42,7 @@ public class MealController {
         } else {
             return Utils.abnormalValue();
         }
+
         if (search != null
                 && !Utils.isEmpty(search)) {//검색어를 받았을 때
             if (dto.getSearch().length() > Const.SEARCH_MAX) {//검색어가 10자를 넘어가면
@@ -54,16 +55,25 @@ public class MealController {
 
     @PutMapping
     @Operation(summary = "일지 수정", description = "일지 수정 처리" +
+            "<br>일지의 상세 정보들을 보내주시되 변경된 부분이 있으면 그 부분만 변경해서 보내주세요" +
             "<br>imeal: 일지pk, title: 제목(음식 이름), ingredient: 재료, recipe: 레시피, review: 후기" +
             "<br>picIdx: 사진 인덱스번호(List), pics: 바꾸고 싶은 사진(List)," +
             "<br>tagIdx: 태그 인덱스번호(List), tags: 바꾸고 싶은 태그(List)" +
             "<br>(result(-4): 입력받은 제목, 재료, 타이틀,사진, 태그가 없습니다," +
             "<br>(-1): 존재하지 않는 일지pk입니다, (0): 실패, (1): 성공)")
     public ResVo putMeal(@RequestBody MealUpdDto dto) {
-        if(Utils.isEmpty(dto.getTitle())
-                ||Utils.isEmpty(dto.getIngredient())
-                ||Utils.isEmpty(dto.getRecipe())){
-            return new ResVo(Const.CANT_NULL);//제목, 재료, 레시피는 반드시 입력 받아야 한다
+        if(dto.getTitle()==null
+                ||dto.getIngredient()==null
+                ||dto.getRecipe()==null
+                ||dto.getPicIdx()==null
+                ||dto.getPics()==null){
+            return new ResVo(Const.CANT_NULL);
+        } else if (Utils.isEmpty(dto.getTitle())
+                || Utils.isEmpty(dto.getIngredient())
+                || Utils.isEmpty(dto.getRecipe())
+                || dto.getPicIdx().isEmpty()
+                || dto.getPics().isEmpty()) {
+            return new ResVo(Const.EMPTY);//제목, 재료, 레시피는 반드시 입력 받아야 한다
         }
         return service.putMeal(dto);
     }
