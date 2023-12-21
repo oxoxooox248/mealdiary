@@ -28,7 +28,8 @@ public class MealSelDto {
         this.startIdx= (page-1)*this.rowCount;
     }
     //page와 rowCount를 이용하여 startIdx를 구한다.
-    public void setSearch2(String search){
+    public void setSearch(String search){
+        this.search= search;
         if(search.substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
             this.existHashSign=true;
             if(Utils.formCheck(search.substring(1))){

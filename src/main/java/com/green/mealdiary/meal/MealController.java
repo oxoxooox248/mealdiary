@@ -27,20 +27,23 @@ public class MealController {
             "<br>search: 검색어(제목, 태그(#으로 시작))" +
             "<br>(imeal: 일지pk, title: 제목(음식이름), review: 후기," +
             "<br>createdAt: 일지 작성일자, pics: 해당 일지의 사진들," +
-            "<br>tags: 해당 일지의 태그들, result(-1): 비정상적인 검색어, (1): 정상)")
+            "<br>tags: 해당 일지의 태그들, result(-1): 비정상적인 검색어," +
+            "<br>(0): page, row_count, bookmark 중 하나 이상이 비정상적입니다.(1): 정상)")
     public List<MealSelVo> getMealList(@RequestParam(required = false, defaultValue = "1") int page,
                                        @RequestParam(name="row_count", required = false,
                                                defaultValue = "4") int rowCount,
                                        @RequestParam(required = false, defaultValue = "0") int bookmark,
                                        @RequestParam(required = false) String search) {
-
         MealSelDto dto = new MealSelDto();
+
         dto.setRowCount(rowCount);//페이지 당 일지 갯수
         dto.setPage(page);//페이지
         dto.setBookmark(bookmark);//북마크 검색(0:모든 일지, 1: 책갈피 설정한 일지만)
         if (search!=null
-                &&!Utils.blankCheck(search)
-                &&!Utils.onlySpace(search)){//검색어를 받았을 때
+                &&!Utils.isEmpty(search)){//검색어를 받았을 때
+            if(dto.getSearch().length()>Const.SEARCH_MAX){//검색어가 10자를 넘어가면
+                return Utils.abnormalSearchForm();
+            }
             dto.setSearch(search);
         }
         return service.getMeal(dto);
@@ -62,7 +65,7 @@ public class MealController {
             "<br>(-3): 태그 갯수 초과, (-4): 입력받은 제목, 재료, 타이틀이 없습니다," +
             "<br>(-5): 태그에 띄워쓰기와 특수문자가 있습니다, (-6): 비정상적인 사진 등록" +
             "<br>(-7): 비정상적인 태그 등록)")
-    public ResVo postMeal(@RequestBody @Valid MealInsDto dto){
+    public ResVo postMeal(@RequestBody MealInsDto dto){
         return service.postMeal(dto);
     }
     @DeleteMapping
