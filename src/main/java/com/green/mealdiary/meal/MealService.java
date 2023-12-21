@@ -33,8 +33,7 @@ public class MealService{
                 if(Utils.formCheck(dto.getSearch().substring(1))){
                 //#뒤에 띄어쓰기나 특수문자 없으면
                 dto.setSearch2(String.format("%%%s%%",dto.getSearch().substring(1)));//search2= "%찌개%" > 태그 검색
-                }
-                else{ //#뒤에 띄어쓰기나 특수문자 있으면
+                } else{ //#뒤에 띄어쓰기나 특수문자 있으면
                     List<MealSelVo> mealList= new ArrayList();
                     MealSelVo vo= new MealSelVo();
                     vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
@@ -44,8 +43,7 @@ public class MealService{
             }
             if(Utils.formCheck(dto.getSearch())){//검색어에 띄어쓰기나 특수문자 없으면
                 dto.setSearch2(String.format("%%%s%%",dto.getSearch()));//search2= "%찌개%" > 제목 검색
-            }
-            else{
+            } else{
                 List<MealSelVo> mealList= new ArrayList();
                 MealSelVo vo= new MealSelVo();
                 vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식

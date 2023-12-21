@@ -1,7 +1,9 @@
 package com.green.mealdiary.common;
 
 import ch.qos.logback.core.testUtil.RandomUtil;
+import com.green.mealdiary.meal.model.MealSelVo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -54,5 +56,12 @@ public class Utils{
             }//사진이 빈 칸이면 안 된다
         }
         return false;
+    }
+    public static List<MealSelVo> abnoramlSearchForm(){
+        List<MealSelVo> mealList= new ArrayList();
+        MealSelVo vo= new MealSelVo();
+        vo.setResult(Const.ABNORMAL_SEARCH_FORM);//비정상적인 검색어 형식
+        mealList.add(vo);
+        return mealList;
     }
 }
