@@ -45,7 +45,9 @@ public class MealController {
 
     @PutMapping
     @Operation(summary = "일지 수정", description = "일지 수정 처리" +
-            "<br>title: 제목(음식 이름), ingredient: 재료, recipe: 레시피, review: 후기" +
+            "<br>imeal: 일지pk, title: 제목(음식 이름), ingredient: 재료, recipe: 레시피, review: 후기" +
+            "<br>picIdx: 사진 인덱스번호(List), pics: 바꾸고 싶은 사진(List)," +
+            "<br>tagIdx: 태그 인덱스번호(List), tags: 바꾸고 싶은 태그(List)" +
             "<br>(result(-4): 입력받은 제목, 재료, 타이틀이 없습니다, (0): 실패, (1): 성공)")
     public ResVo putMeal(@RequestBody MealUpdDto dto) { return service.putMeal(dto);}
 
@@ -108,9 +110,12 @@ public class MealController {
     public ResVo toggleBookmark(int imeal) {return service.toggleBookmark(imeal);}
 
     @GetMapping("/{imeal}")
-    @Operation(summary ="일지의 상세 정보 페이지", description = "일지 클릭 시 나오는 상세 페이지 처리" +
+    @Operation(summary ="일지의 상세 정보", description = "일지 상세 정보 처리" +
             "<br>imeal: 일지 pk" +
-            "<br>(해당 일지가 없는 경우는 null- 제대로 imeal값이 넘어오지 않았을 때)")
+            "<br>(해당 일지가 없는 경우는 null- 제대로 imeal값이 넘어오지 않았을 때" +
+            "<br>imeal: 일지 pk, title: 제목, ingredient: 재료, recipe: 레시피" +
+            "<br>bookmark: 북마크 여부, createdAt: 작성일자, pics: 일지의 사진들(List: 1~3장)," +
+            "<br>tags: 일지의 태그들(List: 0~5개))")
     public MealSelDetailVo getDetail(@PathVariable int imeal){
         return service.getDetail(imeal);
     }
