@@ -14,6 +14,7 @@ public class Const {
     public static final int MANY_PIC= -2;
     public static final int MANY_TAG= -3;
     public static final int CANT_NULL= -4;
+    public static final int EMPTY= -4;
     public static final int ABNORMAL_TAG_FORM= -5;
     public static final int PIC_FAIL= -6;
     public static final int TAG_FAIL= -7;
@@ -28,4 +29,10 @@ public class Const {
     public static final String HASH_SIGN= "#";
     public static final int LOGIN_NO_ID= 2;
     public static final int LOGIN_DIFF_PW= 3;
+    public static final int ROW_COUNT1= 1;
+    public static final int ROW_COUNT2= 4;
+    public static final int PIC_IDX_MIN= 0;
+    public static final int PIC_IDX_MAX= 2;
+
+
 }

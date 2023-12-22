@@ -54,19 +54,13 @@ public class MealService {
     //일지 수정(사진, 태그 제외)
     public ResVo putMeal(MealUpdDto dto) {
         Integer check = mapper.selMealByImeal(dto.getImeal());
-        if(check==null){
+        if (check == null) {
             return new ResVo(Const.NO_EXIST);
         }
-        if(dto.getTitle() == null
-                || dto.getIngredient() == null
-                || dto.getRecipe() == null
-                || Utils.isEmpty(dto.getTitle())
-                || Utils.isEmpty(dto.getIngredient())
-                || Utils.isEmpty(dto.getRecipe())){
-            return new ResVo(Const.CANT_NULL);//제목, 재료, 레시피는 반드시 입력 받아야 한다
+        int affectedRow = mapper.updMeal(dto);
+        if (affectedRow == Const.ZERO) {
+            return new ResVo(Const.ZERO);
         }
-        mapper.updMeal(dto);
-
         if (dto.getPics() != null && !dto.getPics().isEmpty()) {
             List<Integer> ipicList = mapper.selIpics(dto.getImeal());
             //ipicList= {10, 15, 39}
@@ -82,7 +76,6 @@ public class MealService {
                 mapper.updMealPics(pDto);
             }
         }
-
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
             List<Integer> itagList = mapper.selItags(dto.getImeal());
             List<MealTagUpdDto> tagDtoList = new ArrayList();
