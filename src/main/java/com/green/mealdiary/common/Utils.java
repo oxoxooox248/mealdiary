@@ -10,39 +10,42 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Utils {
-    /*여러 번 사용하는 메소드
-    isEmpty는 크기 0이거나 공백 문자열이면 true
-    formCheck는 특수문자나 띄어쓰기가 없으면 true*/
+
+    //formCheck는 특수문자나 띄어쓰기가 없으면 true
     public static boolean formCheck(String str) {
         return Pattern.matches(Const.REGEXP_PATTERN_CHAR, str);
     }//한글,영어,숫자 허용& 띄어쓰기, 특수문자 불가
 
+    //isEmpty는 크기 0이거나 공백 문자열이면 true
     public static boolean isEmpty(String str) {
         return str.isEmpty()
                 || Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR, str);
     }
 
+    //태그 확인
     public static boolean tagCheck(String tag) {
         return !formCheck(tag) || isEmpty(tag);
     }//태그에 특수문자 혹흔 띄어쓰기가 있거나 공백만 있으면 안된다.
     //특수문자 혹흔 띄어쓰기가 있거나 공백만 있으면 true
 
 
-    //일지 리스트 요청 확인
+    //일지 리스트 bad request
     public static List<MealSelVo> getMealListBadRequest() {
         List<MealSelVo> list = new ArrayList();
         MealSelVo vo = new MealSelVo();
         vo.setResult(Const.BAD_REQUEST);
         list.add(vo);
         return list;
-    }//일지 리스트 bad request
+    }
 
+    //일지 리스트 요청 확인
     public static boolean normalValue(int rowCount, int page, int bookmark) {
         return (rowCount == Const.ROW_COUNT1 || rowCount == Const.ROW_COUNT2)
                 && page > Const.ZERO
                 && (bookmark == Const.ZERO || bookmark == Const.BOOKMARK_ON);
     }//rowCount가 0 혹은 4, page가 양수, bookmark가 0 또는 1이면 true
 
+    //일지 리스트 요청 확인
     public static MealSelDto getMealListCheck(int rowCount, int page, int bookmark, String search) {
         MealSelDto dto = new MealSelDto();
         if (normalValue(rowCount, page, bookmark)) {
@@ -62,26 +65,28 @@ public class Utils {
         return dto;
     }
 
-
-    //일지 수정 요청 확인
+    //태그 리스트 체크
+    //태그에 빈 칸이거나 띄어쓰기 혹은 특수문자가 들어가면 true
     public static boolean tagListCheck(List<String> tagList) {
         for (String tag : tagList) {
             if (tagCheck(tag)) {
                 return true;
-            }//태그에 빈 칸이거나 띄어쓰기 혹은 특수문자가 들어가면 true
+            }
         }
         return false;
     }
 
+    //사진 리스트 체크(사진이 빈 칸이면 안 된다)
     public static boolean picListCheck(List<String> picList) {
         for (String pic : picList) {
             if (isEmpty(pic)) {
                 return true;
-            }//사진이 빈 칸이면 안 된다
+            }
         }
         return false;
     }
 
+    //사진 인덱스 리스트 확인
     public static boolean picIdxCheck(List<Integer> picIdx) {
         if (picIdx.size() > Const.PIC_MAX || picIdx.isEmpty()) {
             return true;
@@ -110,6 +115,7 @@ public class Utils {
         return false;//정상이면 false
     }
 
+    //태그 인덱스 리스트 확인
     public static boolean tagIdxCheck(List<Integer> tagIdx) {
         if (tagIdx.size() > Const.TAG_MAX) {
             return true;
@@ -123,7 +129,7 @@ public class Utils {
         }
         return false;//정상이면 false
     }
-
+    //일지 수정 요청 확인
     public static ResVo putMealCheck(@Nullable MealUpdDto dto) {
         if (dto == null) {
             return new ResVo(Const.BAD_REQUEST);
