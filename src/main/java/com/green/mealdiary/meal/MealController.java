@@ -121,7 +121,7 @@ public class MealController {
     @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리" +
             "<br>imeal: 일지pk, ipic: 사진pk" +
             "<br>(result(-1): Bad Request,(0): 실패, (1): 성공)")
-    public ResVo delMealPic(@Nullable MealPicDelDto dto) {
+    public ResVo delMealPic(MealPicDelDto dto) {
         ResVo vo= Utils.delMealPicCheck(dto);
         //check
 

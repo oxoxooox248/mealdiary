@@ -66,11 +66,16 @@ public class MealService {
 
         int affectedRow = mapper.updMeal(dto);
 
-        if (affectedRow == Const.ZERO) {return new ResVo(Const.ZERO);}
+        if (affectedRow == Const.ZERO) {
+            return new ResVo(Const.ZERO);
+        }
 
         if (dto.getPics() != null && !dto.getPics().isEmpty()) {
             List<Integer> ipicList = mapper.selIpics(dto.getImeal());
             List<MealPicUpdDto> picDtoList = new ArrayList();
+            if (dto.getPics().size() != ipicList.size()) {
+                return new ResVo(Const.BAD_REQUEST);
+            }
 
             for (int i = 0; i < dto.getPics().size(); i++) {
                 MealPicUpdDto pDto = new MealPicUpdDto();
@@ -83,12 +88,15 @@ public class MealService {
             for (MealPicUpdDto pDto : picDtoList) {
                 mapper.updMealPics(pDto);
             }
+
         }
 
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
             List<Integer> itagList = mapper.selItags(dto.getImeal());
             List<MealTagUpdDto> tagDtoList = new ArrayList();
-
+            if (dto.getTags().size() != itagList.size()) {
+                return new ResVo(Const.BAD_REQUEST);
+            }
             for (int i = 0; i < dto.getTags().size(); i++) {
                 MealTagUpdDto tDto = new MealTagUpdDto();
                 int itag = itagList.get(dto.getTagIdx().get(i));
@@ -100,8 +108,8 @@ public class MealService {
             for (MealTagUpdDto tDto : tagDtoList) {
                 mapper.updMealTags(tDto);
             }
-        }
 
+        }
         return new ResVo(Const.SUCCESS);
     }
 
@@ -109,7 +117,9 @@ public class MealService {
     public ResVo postMeal(MealInsDto dto) {
         int affectedMeal = mapper.insMeal(dto);//일지 등록 실행
 
-        if (affectedMeal == Const.ZERO) {return new ResVo(Const.ZERO);}
+        if (affectedMeal == Const.ZERO) {
+            return new ResVo(Const.ZERO);
+        }
         //일지 등록이 안 됐을 때
 
         int affectedMealPic = mapper.insMealPics(dto);
@@ -142,16 +152,20 @@ public class MealService {
             return new ResVo(Const.NO_EXIST);
         }//없으면 바로 리턴
 
-        int picCnt= mapper.picCntByImeal(imeal);//해당 일지의 사진 개수 확인
-        int delPicCnt= mapper.delMealPicByImeal(imeal);//해당 일지의 사진들 삭제
+        int picCnt = mapper.picCntByImeal(imeal);//해당 일지의 사진 개수 확인
+        int delPicCnt = mapper.delMealPicByImeal(imeal);//해당 일지의 사진들 삭제
 
-        if (picCnt!= delPicCnt){return new ResVo(Const.ZERO);}
+        if (picCnt != delPicCnt) {
+            return new ResVo(Const.ZERO);
+        }
         //원래 사진 개수랑 삭제된 사진 개수가 불일치
 
-        int tagCnt= mapper.tagCntByImeal(imeal);//해당 일지의 태그 개수 확인
-        int delTagCnt= mapper.delMealTagByImeal(imeal);//해당 일지의 태그들 삭제
+        int tagCnt = mapper.tagCntByImeal(imeal);//해당 일지의 태그 개수 확인
+        int delTagCnt = mapper.delMealTagByImeal(imeal);//해당 일지의 태그들 삭제
 
-        if (tagCnt!= delTagCnt){return new ResVo(Const.ZERO);}
+        if (tagCnt != delTagCnt) {
+            return new ResVo(Const.ZERO);
+        }
         //원래 태그 개수랑 삭제된 태그 개수가 불일치
 
         return new ResVo(mapper.delMeal(imeal));
@@ -217,7 +231,7 @@ public class MealService {
     public MealSelDetailVo getDetail(int imeal) {
         MealSelDetailVo vo = mapper.selDetail(imeal);//해당 일지의 상세 정보(재료, 레시피 포함)
         if (vo == null) {
-            MealSelDetailVo fail= new MealSelDetailVo();
+            MealSelDetailVo fail = new MealSelDetailVo();
             fail.setResult(Const.NO_EXIST);
             return fail;//비어있는 객체 리턴(result= -1)
         }
