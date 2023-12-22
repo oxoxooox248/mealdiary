@@ -197,7 +197,7 @@ public class Utils {
     }
 
     //일지 태그 추가 요청 확인
-    public static ResVo postMealTagCheck(MealTagInsDto dto) {
+    public static ResVo postMealTagCheck(@Nullable MealTagInsDto dto) {
         if (dto == null
                 || dto.getTag() == null
                 || dto.getImeal() < Const.ZERO
@@ -211,7 +211,7 @@ public class Utils {
     }
 
     //일지 사진 추가 요청 확인
-    public static ResVo postMealPicCheck(MealPicInsDto dto) {
+    public static ResVo postMealPicCheck(@Nullable MealPicInsDto dto) {
         if (dto == null
                 || dto.getPic() == null
                 || Utils.isEmpty(dto.getPic())) {
@@ -221,7 +221,7 @@ public class Utils {
     }
 
     //일지 사진 삭제 요청 확인
-    public static ResVo delMealPicCheck(MealPicDelDto dto) {
+    public static ResVo delMealPicCheck(@Nullable MealPicDelDto dto) {
         if (dto == null || dto.getImeal() == Const.ZERO) {
             return new ResVo(Const.BAD_REQUEST);
         }
@@ -229,7 +229,7 @@ public class Utils {
     }
 
     //회원가입 요청 확인
-    public static ResVo signupCheck(UserSignupDto dto){
+    public static ResVo signupCheck(@Nullable UserSignupDto dto){
         if(dto==null
                 ||dto.getUid()==null
                 ||dto.getUpw()==null
@@ -239,7 +239,7 @@ public class Utils {
         return new ResVo(Const.SUCCESS);
     }
     //로그인 요청 확인
-    public static ResVo signinCheck(UserSigninDto dto){
+    public static ResVo signinCheck(@Nullable UserSigninDto dto){
         if(dto==null
                 ||dto.getUid()==null
                 ||dto.getUpw()==null){
