@@ -231,6 +231,7 @@
             title,
             ingredient,
             recipe,
+            review,
             bookmark,
             created_at AS createdAt
         FROM t_meal
