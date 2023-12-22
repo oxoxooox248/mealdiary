@@ -7,36 +7,48 @@ import java.util.List;
 
 @Mapper
 public interface MealMapper {
-    List<MealSelVo> selMeal(MealSelDto dto);//일지 리스트1
-    List<MealPicSelVo> selMealPicByImealList(List<Integer> imealList);//일지 리스트2
-    List<MealTagSelVo> selMealTagByImealList(List<Integer> imealList);//일지 리스트3
+    //일지 리스트
+    List<MealSelVo> selMeal(MealSelDto dto);
+    List<MealPicSelVo> selMealPicByImealList(List<Integer> imealList);
+    List<MealTagSelVo> selMealTagByImealList(List<Integer> imealList);
 
+    //일지 수정
     int updMeal(MealUpdDto dto);//일지 수정(사진, 태그 제외)
     List<Integer> selIpics(int imeal);//일지 수정 중 변경해야하는 사진pk
     int updMealPics(MealPicUpdDto dto);//일지 사진 수정
     List<Integer> selItags(int imeal);//일지 수정 중 변경해야하는 태그pk
     int updMealTags(MealTagUpdDto dto);//일지 태그 수정
 
-    int insMeal(MealInsDto dto);//일지 작성1
-    int insMealPics(MealInsDto dto);//일지 작성2
-    int insMealTags(MealInsDto dto);//일지 작성3
+    //일지 작성
+    int insMeal(MealInsDto dto);
+    int insMealPics(MealInsDto dto);
+    int insMealTags(MealInsDto dto);
 
-    Integer selMealByImeal(int imeal);//일지삭제1
-    int delMealPicByImeal(int imeal);//일지삭제2
-    int delMealTagByImeal(int imeal);//일지삭제3
-    int delMeal(int imeal);//일지삭제4
+    //일지삭제
+    Integer selMealByImeal(int imeal);
+    int picCntByImeal(int imeal);
+    int delMealPicByImeal(int imeal);
+    int tagCntByImeal(int imeal);
+    int delMealTagByImeal(int imeal);
+    int delMeal(int imeal);
 
-    int insMealTag(MealTagInsDto dto);//일지 태그 추가
+    //일지 태그 추가
+    int insMealTag(MealTagInsDto dto);
 
-    int delMealTag(int itag);//일지 태그 삭제
+    //일지 태그 삭제
+    int delMealTag(int itag);
 
-    int insMealPic(MealPicInsDto dto);//일지 사진 추가
+    //일지 사진 추가
+    int insMealPic(MealPicInsDto dto);
 
-    int delMealPic(int ipic);//일지 사진 삭제
+    //일지 사진 삭제
+    int delMealPic(int ipic);
 
-    int toggleBookmark(MealBookmarkDto dto);//북마크 온오프
+    //북마크 온오프
+    int toggleBookmark(MealBookmarkDto dto);
 
-    MealSelDetailVo selDetail(int imeal);//일지 상세 정보1
-    List<String> selMealPics(int imeal);//일지 상세 정보2, 일지 사진  전 체크
-    List<String> selMealTags(int imeal);//일지 상세 정보3, 일지 태그 추가 전 체크
+    //일지 상세 정보
+    MealSelDetailVo selDetail(int imeal);//일지 상세 정보
+    List<String> selMealPics(int imeal);//일지 사진 정보
+    List<String> selMealTags(int imeal);//일지 태그 정보
 }

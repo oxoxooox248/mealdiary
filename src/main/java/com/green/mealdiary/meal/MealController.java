@@ -4,6 +4,7 @@ import com.green.mealdiary.common.*;
 import com.green.mealdiary.meal.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,73 +28,53 @@ public class MealController {
             "<br>search: 검색어(제목, 태그(#으로 시작))" +
             "<br>(imeal: 일지pk, title: 제목(음식이름), review: 후기," +
             "<br>createdAt: 일지 작성일자, pics: 해당 일지의 사진들," +
-            "<br>tags: 해당 일지의 태그들, result(-1): 비정상적인 검색어," +
-            "<br>(0): page, row_count, bookmark 중 하나 이상이 비정상적입니다.(1): 정상)")
+            "<br>tags: 해당 일지의 태그들, result(-1): Bad Request" +
+            "<br>(1): 정상)")
     public List<MealSelVo> getMealList(@RequestParam(required = false, defaultValue = "1") int page,
                                        @RequestParam(name = "row_count", required = false,
                                                defaultValue = "4") int rowCount,
                                        @RequestParam(required = false, defaultValue = "0") int bookmark,
                                        @RequestParam(required = false) String search) {
-        MealSelDto dto = new MealSelDto();
-        if (Utils.normalValue(rowCount, page, bookmark)) {
-            dto.setRowCount(rowCount);//페이지 당 일지 갯수
-            dto.setPage(page);//페이지
-            dto.setBookmark(bookmark);//북마크 검색(0:모든 일지, 1: 책갈피 설정한 일지만)
-        } else {
-            return Utils.abnormalValue();
-        }
+        MealSelDto dto= Utils.getMealListCheck(rowCount, page, bookmark, search);
 
-        if (search != null
-                && !Utils.isEmpty(search)) {//검색어를 받았을 때
-            if (dto.getSearch().length() > Const.SEARCH_MAX) {//검색어가 10자를 넘어가면
-                return Utils.abnormalSearchForm();
-            }
-            dto.setSearch(search);
-        }
+        if(dto==null) {return Utils.getMealListBadRequest();}
+
         return service.getMeal(dto);
-    }
 
+    }
     @PutMapping
     @Operation(summary = "일지 수정", description = "일지 수정 처리" +
             "<br>일지의 상세 정보들을 보내주시되 변경된 부분이 있으면 그 부분만 변경해서 보내주세요" +
             "<br>imeal: 일지pk, title: 제목(음식 이름), ingredient: 재료, recipe: 레시피, review: 후기" +
             "<br>picIdx: 사진 인덱스번호(List), pics: 바꾸고 싶은 사진(List)," +
             "<br>tagIdx: 태그 인덱스번호(List), tags: 바꾸고 싶은 태그(List)" +
-            "<br>(result(-4): 입력받은 제목, 재료, 타이틀,사진, 태그가 없습니다," +
-            "<br>(-1): 존재하지 않는 일지pk입니다, (0): 실패, (1): 성공)")
-    public ResVo putMeal(@RequestBody MealUpdDto dto) {
-        if(dto.getTitle()==null
-                ||dto.getIngredient()==null
-                ||dto.getRecipe()==null
-                ||dto.getPicIdx()==null
-                ||dto.getPics()==null){
-            return new ResVo(Const.CANT_NULL);
-        } else if (Utils.isEmpty(dto.getTitle())
-                || Utils.isEmpty(dto.getIngredient())
-                || Utils.isEmpty(dto.getRecipe())
-                || dto.getPicIdx().isEmpty()
-                || dto.getPics().isEmpty()) {
-            return new ResVo(Const.EMPTY);//제목, 재료, 레시피는 반드시 입력 받아야 한다
-        }
+            "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
+    public ResVo putMeal(@RequestBody @Nullable MealUpdDto dto) {
+        ResVo vo= Utils.putMealCheck(dto);
+        if(vo.getResult()!=Const.SUCCESS){return vo;}
         return service.putMeal(dto);
+
     }
 
     @PostMapping
     @Operation(summary = "일지 작성", description = "일지 작성 처리" +
             "<br>title: 제목(음식이름), ingredient: 식재료, recipe: 레시피, review: 후기," +
             "<br>pics(리스트): 일지 사진, tags(리스트): 일지 태그" +
-            "<br>(result(1): 성공, (0): 실패, (-1): 사진 없음, (-2): 사진 갯수 초과," +
-            "<br>(-3): 태그 갯수 초과, (-4): 입력받은 제목, 재료, 타이틀이 없습니다," +
-            "<br>(-5): 태그에 띄워쓰기와 특수문자가 있습니다, (-6): 비정상적인 사진 등록" +
-            "<br>(-7): 비정상적인 태그 등록)")
-    public ResVo postMeal(@RequestBody MealInsDto dto) {
-        return service.postMeal(dto);
+            "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
+    public ResVo postMeal(@RequestBody @Nullable MealInsDto dto) {
+        ResVo vo= Utils.postMealCheck(dto);
+        //check
+        if(vo.getResult()!=Const.SUCCESS){
+            return vo;
+        }//bad request
+
+        return service.postMeal(dto);//실행
     }
 
     @DeleteMapping
     @Operation(summary = "일지 삭제", description = "일지 삭제 처리" +
             "<br>imeal: 일지pk" +
-            "<br>(result(-1): 해당 일지는 없는 일지입니다, (0): 실패, (1): 성공)")
+            "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
     public ResVo delMeal(int imeal) {
         return service.delMeal(imeal);
     }
@@ -101,10 +82,16 @@ public class MealController {
     @PostMapping("/tag")
     @Operation(summary = "일지 태그 추가", description = "일지 태그 추가 처리" +
             "<br>imeal: 일지pk, tag: 추가할 태그 내용" +
-            "<br>(result(0): 실패, (1): 성공, (-3): 태그 갯수 초과," +
-            "<br>(-4): 입력된 태그가 없습니다, (-5): 태그에 띄워쓰기와 특수문자가 있습니다.)")
-    public ResVo postMealTag(@RequestBody MealTagInsDto dto) {
-        return service.postMealTag(dto);
+            "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
+    public ResVo postMealTag(@RequestBody @Nullable MealTagInsDto dto) {
+        ResVo vo= Utils.postMealTagCheck(dto);
+        //check
+
+        if(vo.getResult()!=Const.SUCCESS){
+            return vo;
+        }//bad request
+
+        return service.postMealTag(dto);//실행
     }
 
     @DeleteMapping("/tag")
@@ -118,19 +105,31 @@ public class MealController {
     @PostMapping("/pic")
     @Operation(summary = "일지 사진 추가", description = "일지 사진 추가 처리" +
             "<br>imeal: 일지pk, pic: 추가할 사진 주소" +
-            "<br>(result(0): 실패, (1): 성공, (-1): 해당 일지는 없는 일지 or 입력받은 사진이 존재하지 않음, " +
-            "<br>(-2): 사진 갯수 초과로 더 추가 불가)")
-    public ResVo postMealPic(@RequestBody MealPicInsDto dto) {
-        return service.postMealPic(dto);
+            "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
+    public ResVo postMealPic(@RequestBody @Nullable MealPicInsDto dto) {
+        ResVo vo= Utils.postMealPicCheck(dto);
+        //check
+
+        if(vo.getResult()!=Const.SUCCESS){
+            return vo;
+        }//bad request
+
+        return service.postMealPic(dto);//실행
     }
 
     @DeleteMapping("/pic")
     @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리" +
             "<br>imeal: 일지pk, ipic: 사진pk" +
-            "<br>(result(0): 실패, (1): 성공, (-1): 사진이 한 장이라서 삭제 불가, " +
-            "<br>해당 일지는 없는 일지 입니다)")
-    public ResVo delMealPic(MealPicDelDto dto) {
-        return service.delMealPic(dto);
+            "<br>(result(-1): Bad Request,(0): 실패, (1): 성공)")
+    public ResVo delMealPic(@Nullable MealPicDelDto dto) {
+        ResVo vo= Utils.delMealPicCheck(dto);
+        //check
+
+        if(vo.getResult()!=Const.SUCCESS){
+            return vo;
+        }//bad request
+
+        return service.delMealPic(dto);//실행
     }
 
     @PostMapping("/bookmark")
@@ -144,11 +143,11 @@ public class MealController {
     @GetMapping("/{imeal}")
     @Operation(summary = "일지의 상세 정보", description = "일지 상세 정보 처리" +
             "<br>imeal: 일지 pk" +
-            "<br>(해당 일지가 없는 경우는 null- 제대로 imeal값이 넘어오지 않았을 때" +
+            "<br>(result(-1):Bad Request, (1): 정상" +
             "<br>imeal: 일지 pk, title: 제목, ingredient: 재료, recipe: 레시피" +
             "<br>bookmark: 북마크 여부, createdAt: 작성일자, pics: 일지의 사진들(List: 1~3장)," +
             "<br>tags: 일지의 태그들(List: 0~5개))")
-    public MealSelDetailVo getDetail(@PathVariable int imeal) {
+    public MealSelDetailVo getDetail(@PathVariable(required = false) int imeal) {
         return service.getDetail(imeal);
     }
 }

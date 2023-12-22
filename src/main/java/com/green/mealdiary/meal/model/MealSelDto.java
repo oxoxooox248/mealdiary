@@ -31,7 +31,7 @@ public class MealSelDto {
     public void setSearch(String search){
         this.search= search;
         if(search.substring(0,1).equals(Const.HASH_SIGN)){//검색어 첫 글자가 #이면(#찌개)
-            this.existHashSign=true;
+            this.existHashSign= true;
             if(Utils.formCheck(search.substring(1))){
             //#뒤에 띄어쓰기나 특수문자 없으면
                 this.search2=String.format("%%%s%%",search.substring(1));//search2= "%찌개%" > 태그 검색
