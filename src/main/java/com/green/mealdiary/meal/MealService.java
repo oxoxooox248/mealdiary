@@ -165,7 +165,7 @@ public class MealService {
         if (targetImeal == null) {
             return new ResVo(Const.NO_EXIST);//없으면 바로 리턴
         } else if (mapper.selMealTags(dto.getImeal()).size() >= Const.TAG_MAX) {
-            return new ResVo(Const.MANY_TAG);
+            return new ResVo(Const.BAD_REQUEST);
         }//해당 일지의 태그가 최대 갯수(5)만큼 있을 경우 추가 불가
 
         return new ResVo(mapper.insMealTag(dto));//태그 추가 실행
