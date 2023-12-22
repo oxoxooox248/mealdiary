@@ -15,4 +15,5 @@ public class MealSelDetailVo {//상세 정보(재료, 레시피 추가)
     private String createdAt;//작성일자
     private List<String> pics;//일지의 사진들(1~3)
     private List<String> tags;//일지의 태그들(0~5)
+    private int result= 1;
 }
