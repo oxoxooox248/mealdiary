@@ -35,11 +35,16 @@ public class MealController {
                                                defaultValue = "4") int rowCount,
                                        @RequestParam(required = false, defaultValue = "0") int bookmark,
                                        @RequestParam(required = false) String search) {
-        MealSelDto dto= Utils.getMealListCheck(rowCount, page, bookmark, search);
+        try{
+            MealSelDto dto= Utils.getMealListCheck(rowCount, page, bookmark, search);
 
-        if(dto==null) {return Utils.getMealListBadRequest();}
+            if(dto==null) {return Utils.getMealListBadRequest();}
 
-        return service.getMeal(dto);
+            return service.getMeal(dto);
+
+        }catch(Exception e){
+            return Utils.getMealListBadRequest();
+        }
 
     }
     @PutMapping
@@ -50,9 +55,13 @@ public class MealController {
             "<br>tagIdx: 태그 인덱스번호(List), tags: 바꾸고 싶은 태그(List)" +
             "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
     public ResVo putMeal(@RequestBody @Nullable MealUpdDto dto) {
-        ResVo vo= Utils.putMealCheck(dto);
-        if(vo.getResult()!=Const.SUCCESS){return vo;}
-        return service.putMeal(dto);
+        try{
+            ResVo vo= Utils.putMealCheck(dto);
+            if(vo.getResult()!=Const.SUCCESS){return vo;}
+            return service.putMeal(dto);
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
 
     }
 
@@ -62,13 +71,18 @@ public class MealController {
             "<br>pics(리스트): 일지 사진, tags(리스트): 일지 태그" +
             "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
     public ResVo postMeal(@RequestBody @Nullable MealInsDto dto) {
-        ResVo vo= Utils.postMealCheck(dto);
-        //check
-        if(vo.getResult()!=Const.SUCCESS){
-            return vo;
-        }//bad request
+        try{
+            ResVo vo= Utils.postMealCheck(dto);
+            //check
+            if(vo.getResult()!=Const.SUCCESS){
+                return vo;
+            }//bad request
 
-        return service.postMeal(dto);//실행
+            return service.postMeal(dto);//실행
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping
@@ -76,7 +90,12 @@ public class MealController {
             "<br>imeal: 일지pk" +
             "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
     public ResVo delMeal(int imeal) {
-        return service.delMeal(imeal);
+        try{
+            return service.delMeal(imeal);
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/tag")
@@ -84,14 +103,19 @@ public class MealController {
             "<br>imeal: 일지pk, tag: 추가할 태그 내용" +
             "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
     public ResVo postMealTag(@RequestBody @Nullable MealTagInsDto dto) {
-        ResVo vo= Utils.postMealTagCheck(dto);
-        //check
+        try{
+            ResVo vo= Utils.postMealTagCheck(dto);
+            //check
 
-        if(vo.getResult()!=Const.SUCCESS){
-            return vo;
-        }//bad request
+            if(vo.getResult()!=Const.SUCCESS){
+                return vo;
+            }//bad request
 
-        return service.postMealTag(dto);//실행
+            return service.postMealTag(dto);//실행
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/tag")
@@ -99,7 +123,12 @@ public class MealController {
             "<br>itag: 태그pk" +
             "<br>(result(0): 실패(태그가 없을 때), (1): 성공)")
     public ResVo delMealTag(int itag) {
-        return service.delMealTag(itag);
+        try{
+            return service.delMealTag(itag);
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/pic")
@@ -107,14 +136,19 @@ public class MealController {
             "<br>imeal: 일지pk, pic: 추가할 사진 주소" +
             "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
     public ResVo postMealPic(@RequestBody @Nullable MealPicInsDto dto) {
-        ResVo vo= Utils.postMealPicCheck(dto);
-        //check
+        try{
+            ResVo vo= Utils.postMealPicCheck(dto);
+            //check
 
-        if(vo.getResult()!=Const.SUCCESS){
-            return vo;
-        }//bad request
+            if(vo.getResult()!=Const.SUCCESS){
+                return vo;
+            }//bad request
 
-        return service.postMealPic(dto);//실행
+            return service.postMealPic(dto);//실행
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/pic")
@@ -122,14 +156,19 @@ public class MealController {
             "<br>imeal: 일지pk, ipic: 사진pk" +
             "<br>(result(-1): Bad Request,(0): 실패, (1): 성공)")
     public ResVo delMealPic(MealPicDelDto dto) {
-        ResVo vo= Utils.delMealPicCheck(dto);
-        //check
+        try{
+            ResVo vo= Utils.delMealPicCheck(dto);
+            //check
 
-        if(vo.getResult()!=Const.SUCCESS){
-            return vo;
-        }//bad request
+            if(vo.getResult()!=Const.SUCCESS){
+                return vo;
+            }//bad request
 
-        return service.delMealPic(dto);//실행
+            return service.delMealPic(dto);//실행
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
+
     }
 
     @PostMapping("/bookmark")
@@ -137,7 +176,12 @@ public class MealController {
             "<br>imeal: 일지pk" +
             "<br>(result(-1): 해당 일지는 없는 일지입니다, (0): 해제, (1): 표시)")
     public ResVo toggleBookmark(int imeal) {
-        return service.toggleBookmark(imeal);
+        try{
+            return service.toggleBookmark(imeal);
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping("/{imeal}")
@@ -148,6 +192,12 @@ public class MealController {
             "<br>bookmark: 북마크 여부, createdAt: 작성일자, pics: 일지의 사진들(List: 1~3장)," +
             "<br>tags: 일지의 태그들(List: 0~5개))")
     public MealSelDetailVo getDetail(@PathVariable(required = false) int imeal) {
-        return service.getDetail(imeal);
+        try{
+            return service.getDetail(imeal);
+        }catch(Exception e){
+            MealSelDetailVo vo= new MealSelDetailVo();
+            vo.setResult(Const.BAD_REQUEST);
+            return vo;
+        }
     }
 }

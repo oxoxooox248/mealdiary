@@ -121,7 +121,7 @@ public class Utils {
             return true;
         }//태그 인덱스 리스트 갯수가 5 초과
         for (int i = 0; i < tagIdx.size() - 1; i++) {
-            for (int z = i + 1; z <= tagIdx.size(); z++) {
+            for (int z = i + 1; z < tagIdx.size(); z++) {
                 if (tagIdx.get(i).equals(tagIdx.get(z))) {
                     return true;//태그 인덱스가 중복이면 true
                 }
