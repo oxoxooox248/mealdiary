@@ -8,7 +8,7 @@
         SET
             uid= #{uid},
             upw= #{hashedPw},
-            nm= #{nm},
+            name= #{nm},
             pic= #{pic}
     </insert>
     <select id="selUserByUid">
