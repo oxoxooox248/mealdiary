@@ -21,7 +21,10 @@ public class Utils {
         return str.isEmpty()
                 || Pattern.matches(Const.REGEXP_PATTERN_SPACE_CHAR, str);
     }
-
+    //notAllowSpace는 space가 있으면 false
+    public static boolean notAllowSpace(String str){
+        return Pattern.matches(Const.REGEXP_PATTERN_NO_SPACE_CHAR, str);
+    }
     //태그 확인
     public static boolean tagCheck(String tag) {
         return !formCheck(tag) || isEmpty(tag);
@@ -239,7 +242,12 @@ public class Utils {
         if(dto==null
                 ||dto.getUid()==null
                 ||dto.getUpw()==null
-                ||dto.getNm()==null){
+                ||dto.getNm()==null
+                ||!notAllowSpace(dto.getUid())
+                ||!notAllowSpace(dto.getUpw())
+                ||!notAllowSpace(dto.getNm())){
+            return new ResVo(Const.BAD_REQUEST);
+        } else if(!(dto.getPic()==null)&&isEmpty(dto.getPic())){
             return new ResVo(Const.BAD_REQUEST);
         }
         return new ResVo(Const.SUCCESS);
@@ -248,7 +256,9 @@ public class Utils {
     public static ResVo signinCheck(@Nullable UserSigninDto dto){
         if(dto==null
                 ||dto.getUid()==null
-                ||dto.getUpw()==null){
+                ||dto.getUpw()==null
+                ||!notAllowSpace(dto.getUid())
+                ||!notAllowSpace(dto.getUpw())){
             return new ResVo(Const.BAD_REQUEST);
         }
         return new ResVo(Const.SUCCESS);

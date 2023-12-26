@@ -14,6 +14,8 @@ public class Const {
     //한글,영어,숫자만 허용(띄어쓰기, 특수문자 사용 불가)
     public static final String REGEXP_PATTERN_SPACE_CHAR = "^[\\s]*$";
     //스페이스와 탭만 존재하는 문자열
+    public static final String REGEXP_PATTERN_NO_SPACE_CHAR = "^[\\S]*$";
+    //문자열만 허용하는 정규식 - 공백 미 허용
     public static final int BAD_REQUEST= -1; // 잘못된 요청
     public static final int SEARCH_MAX= 10; // 검색어 글자 최대 10개초과
     public static final String HASH_SIGN= "#"; // 검색시 #있는지 확인여부
