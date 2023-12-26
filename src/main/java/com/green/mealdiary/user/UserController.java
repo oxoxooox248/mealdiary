@@ -27,26 +27,34 @@ public class UserController {
             "<br>uid: 아이디, upw: 비밀번호, nm: 이름, pic: 프로필 사진" +
             "<br>(result(-1): Bad Request, (0): 실패, (1) 성공)" )
     public ResVo signup(@RequestBody @Nullable UserSignupDto dto){
-        ResVo vo= Utils.signupCheck(dto);
-        //check
+        try{
+            ResVo vo= Utils.signupCheck(dto);
+            //check
 
-        if(vo.getResult()!= Const.SUCCESS){
-            return vo;
-        }//bad request
+            if(vo.getResult()!= Const.SUCCESS){
+                return vo;
+            }//bad request
 
-        return service.signup(dto);
+            return service.signup(dto);
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
     }
     @PostMapping("/signin")
     @Operation(summary ="로그인", description = "로그인 처리" +
             "<br>uid: 아이디, upw: 비밀번호" +
             "<br>(result(-1): Bad Request, (1): 로그인 성공, (2): 아이디 없음, (3): 비밀번호 틀림)" )
     public ResVo signin(@RequestBody @Nullable UserSigninDto dto){
-        ResVo vo= Utils.signinCheck(dto);
-        //check
-        if(vo.getResult()!= Const.SUCCESS){
-            return vo;
-        }//bad request
+        try{
+            ResVo vo= Utils.signinCheck(dto);
+            //check
+            if(vo.getResult()!= Const.SUCCESS){
+                return vo;
+            }//bad request
+            return service.signin(dto);
+        }catch(Exception e){
+            return new ResVo(Const.BAD_REQUEST);
+        }
 
-        return service.signin(dto);
     }
 }
