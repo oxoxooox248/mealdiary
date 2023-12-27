@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/meal")
-@Tag(name = "오늘 뭐 먹조", description = "식사 일지")
+@Tag(name = "일지 API", description = "식사 일지 관련 처리")
 public class MealController {
     private final MealService service;
 

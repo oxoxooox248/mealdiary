@@ -69,46 +69,17 @@ public class MealService {
         if (affectedRow == Const.ZERO) {
             return new ResVo(Const.ZERO);
         }
-
+        MealInsDto iDto= new MealInsDto();
+        iDto.setImeal(dto.getImeal());
         if (dto.getPics() != null && !dto.getPics().isEmpty()) {
-            List<Integer> ipicList = mapper.selIpics(dto.getImeal());
-            List<MealPicUpdDto> picDtoList = new ArrayList();
-            if (dto.getPics().size() != ipicList.size()) {
-                return new ResVo(Const.BAD_REQUEST);
-            }
-
-            for (int i = 0; i < dto.getPics().size(); i++) {
-                MealPicUpdDto pDto = new MealPicUpdDto();
-                int ipic = ipicList.get(dto.getPicIdx().get(i));
-                pDto.setIpic(ipic);
-                pDto.setPic(dto.getPics().get(i));
-                picDtoList.add(pDto);
-            }
-
-            for (MealPicUpdDto pDto : picDtoList) {
-                mapper.updMealPics(pDto);
-            }
-
+            iDto.setPics(dto.getPics());
+            int affectedDelPic= mapper.delMealPicByImeal(dto.getImeal());
+            int affectedInsPic= mapper.insMealPics(iDto);
         }
-
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
-            List<Integer> itagList = mapper.selItags(dto.getImeal());
-            List<MealTagUpdDto> tagDtoList = new ArrayList();
-            if (dto.getTags().size() != itagList.size()) {
-                return new ResVo(Const.BAD_REQUEST);
-            }
-            for (int i = 0; i < dto.getTags().size(); i++) {
-                MealTagUpdDto tDto = new MealTagUpdDto();
-                int itag = itagList.get(dto.getTagIdx().get(i));
-                tDto.setItag(itag);
-                tDto.setTag(dto.getTags().get(i));
-                tagDtoList.add(tDto);
-            }
-
-            for (MealTagUpdDto tDto : tagDtoList) {
-                mapper.updMealTags(tDto);
-            }
-
+            iDto.setTags(dto.getTags());
+            int affectedDelTag= mapper.delMealPicByImeal(dto.getImeal());
+            int affectedInsTag= mapper.insMealPics(iDto);
         }
         return new ResVo(Const.SUCCESS);
     }

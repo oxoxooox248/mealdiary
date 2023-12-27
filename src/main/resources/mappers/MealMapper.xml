@@ -17,7 +17,7 @@
                 <when test="existHashSign">
                     JOIN t_meal_tag B
                     ON A.imeal= B.imeal
-                    WHERE B.tag LIKE #{search2} <!--like "%찌개%"-->
+                    WHERE B.tag LIKE #{search2} <!--like "%찌개%"}-->
                     <if test="bookmark==1">
                         AND A.bookmark= 1
                     </if>
