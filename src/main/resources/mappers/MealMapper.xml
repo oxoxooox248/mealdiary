@@ -70,32 +70,7 @@
             review= #{review}
         WHERE imeal= #{imeal}
     </update>
-    <select id="selIpics">
-        SELECT
-            ipic
-        FROM t_meal_pic
-        WHERE imeal= #{imeal}
-    </select>
-    <update id="updMealPics">
-        UPDATE
-        t_meal_pic
-        SET
-            pic=#{pic}
-        WHERE ipic= #{ipic}
-    </update>
-    <select id="selItags">
-        SELECT
-            itag
-        FROM t_meal_tag
-        WHERE imeal= #{imeal}
-    </select>
-    <update id="updMealTags">
-        UPDATE
-        t_meal_tag
-        SET
-            tag=#{tag}
-        WHERE itag= #{itag}
-    </update>
+
 
 
     <!--일지 작성-->
