@@ -97,79 +97,6 @@ public class MealController {
 
     }
 
-    @PostMapping("/tag")
-    @Operation(summary = "일지 태그 추가", description = "일지 태그 추가 처리" +
-            "<br>imeal: 일지pk, tag: 추가할 태그 내용" +
-            "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
-    public ResVo postMealTag(@RequestBody @Nullable MealTagInsDto dto) {
-        try{
-            ResVo vo= Utils.postMealTagCheck(dto);
-            //check
-
-            if(vo.getResult()!=Const.SUCCESS){
-                return vo;
-            }//bad request
-
-            return service.postMealTag(dto);//실행
-        }catch(Exception e){
-            return new ResVo(Const.BAD_REQUEST);
-        }
-
-    }
-
-    @DeleteMapping("/tag")
-    @Operation(summary = "일지 태그 삭제", description = "일지 태그 삭제 처리" +
-            "<br>itag: 태그pk" +
-            "<br>(result(0): 실패(태그가 없을 때), (1): 성공)")
-    public ResVo delMealTag(int itag) {
-        try{
-            return service.delMealTag(itag);
-        }catch(Exception e){
-            return new ResVo(Const.BAD_REQUEST);
-        }
-
-    }
-
-    @PostMapping("/pic")
-    @Operation(summary = "일지 사진 추가", description = "일지 사진 추가 처리" +
-            "<br>imeal: 일지pk, pic: 추가할 사진 주소" +
-            "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
-    public ResVo postMealPic(@RequestBody @Nullable MealPicInsDto dto) {
-        try{
-            ResVo vo= Utils.postMealPicCheck(dto);
-            //check
-
-            if(vo.getResult()!=Const.SUCCESS){
-                return vo;
-            }//bad request
-
-            return service.postMealPic(dto);//실행
-        }catch(Exception e){
-            return new ResVo(Const.BAD_REQUEST);
-        }
-
-    }
-
-    @DeleteMapping("/pic")
-    @Operation(summary = "일지 사진 삭제", description = "일지 사진 삭제 처리" +
-            "<br>imeal: 일지pk, ipic: 사진pk" +
-            "<br>(result(-1): Bad Request,(0): 실패, (1): 성공)")
-    public ResVo delMealPic(MealPicDelDto dto) {
-        try{
-            ResVo vo= Utils.delMealPicCheck(dto);
-            //check
-
-            if(vo.getResult()!=Const.SUCCESS){
-                return vo;
-            }//bad request
-
-            return service.delMealPic(dto);//실행
-        }catch(Exception e){
-            return new ResVo(Const.BAD_REQUEST);
-        }
-
-    }
-
     @PostMapping("/bookmark")
     @Operation(summary = "책갈피 표시/해제", description = "북마크 on/off 토글로 처리" +
             "<br>imeal: 일지pk" +
@@ -180,7 +107,6 @@ public class MealController {
         }catch(Exception e){
             return new ResVo(Const.BAD_REQUEST);
         }
-
     }
 
     @GetMapping("/{imeal}")

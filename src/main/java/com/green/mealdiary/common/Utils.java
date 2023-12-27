@@ -157,38 +157,6 @@ public class Utils {
         return new ResVo(Const.SUCCESS);
     }
 
-    //일지 태그 추가 요청 확인
-    public static ResVo postMealTagCheck(@Nullable MealTagInsDto dto) {
-        if (dto == null
-                || dto.getTag() == null
-                || dto.getImeal() < Const.ZERO
-                || Utils.isEmpty(dto.getTag())
-                || !Utils.formCheck(dto.getTag())) {
-            return new ResVo(Const.BAD_REQUEST);
-        }
-        //태그 추가할 때 null이거나 빈 칸일 때는 수정하면 안된다.
-        //태그에 띄어쓰기나 특수문자가 들어가면 안 된다
-        return new ResVo(Const.SUCCESS);
-    }
-
-    //일지 사진 추가 요청 확인
-    public static ResVo postMealPicCheck(@Nullable MealPicInsDto dto) {
-        if (dto == null
-                || dto.getPic() == null
-                || Utils.isEmpty(dto.getPic())) {
-            return new ResVo(Const.BAD_REQUEST);
-        }
-        return new ResVo(Const.SUCCESS);
-    }
-
-    //일지 사진 삭제 요청 확인
-    public static ResVo delMealPicCheck(@Nullable MealPicDelDto dto) {
-        if (dto == null || dto.getImeal() == Const.ZERO) {
-            return new ResVo(Const.BAD_REQUEST);
-        }
-        return new ResVo(Const.SUCCESS);
-    }
-
     //회원가입 요청 확인
     public static ResVo signupCheck(@Nullable UserSignupDto dto){
         if(dto==null
@@ -204,6 +172,7 @@ public class Utils {
         }
         return new ResVo(Const.SUCCESS);
     }
+
     //로그인 요청 확인
     public static ResVo signinCheck(@Nullable UserSigninDto dto){
         if(dto==null
