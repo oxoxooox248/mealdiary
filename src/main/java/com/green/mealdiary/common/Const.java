@@ -22,7 +22,5 @@ public class Const {
     public static final int LOGIN_NO_ID= 2; // 로그인 시 아이디 없음
     public static final int LOGIN_DIFF_PW= 3; // 로그인 시 비밀번호 틀림
     public static final int ROW_COUNT1= 1; // 페이지당 일지 수 (크게보기)
-    public static final int ROW_COUNT2= 4; // 페이지당 일지 수 (작게보기)
-    public static final int PIC_IDX_MIN= 0; // 사진 배열 최소 방번호 0
-    public static final int PIC_IDX_MAX= 2; // 사진 배열 최대 방번호 2
+    public static final int ROW_COUNT2= 8; // 페이지당 일지 수 (작게보기)
 }

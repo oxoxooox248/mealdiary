@@ -46,7 +46,7 @@ public class Utils {
         return (rowCount == Const.ROW_COUNT1 || rowCount == Const.ROW_COUNT2)
                 && page > Const.ZERO
                 && (bookmark == Const.ZERO || bookmark == Const.BOOKMARK_ON);
-    }//rowCount가 0 혹은 4, page가 양수, bookmark가 0 또는 1이면 true
+    }//rowCount가 0 혹은 8, page가 양수, bookmark가 0 또는 1이면 true
 
     //일지 리스트 요청 확인
     public static MealSelDto getMealListCheck(int rowCount, int page, int bookmark, String search) {

@@ -14,10 +14,6 @@ public interface MealMapper {
 
     //일지 수정
     int updMeal(MealUpdDto dto);//일지 수정(사진, 태그 제외)
-    List<Integer> selIpics(int imeal);//일지 수정 중 변경해야하는 사진pk
-    int updMealPics(MealPicUpdDto dto);//일지 사진 수정
-    List<Integer> selItags(int imeal);//일지 수정 중 변경해야하는 태그pk
-    int updMealTags(MealTagUpdDto dto);//일지 태그 수정
 
     //일지 작성
     int insMeal(MealInsDto dto);

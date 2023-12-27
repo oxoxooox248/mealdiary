@@ -23,7 +23,7 @@ public class MealController {
 
     @GetMapping
     @Operation(summary = "일지 리스트", description = "일지 리스트 처리" +
-            "<br>page: 페이지(디폴트 값=1),row_count: 페이지 당 일지 갯수(디폴트 값=4)," +
+            "<br>page: 페이지(디폴트 값=1),row_count: 페이지 당 일지 갯수(디폴트 값=8)," +
             "<br>bookmark: 북마크 여부(0:모든 일지, 1:북마크 있는 일지만)(디폴트 값=0), " +
             "<br>search: 검색어(제목, 태그(#으로 시작))" +
             "<br>(imeal: 일지pk, title: 제목(음식이름), review: 후기," +
@@ -32,7 +32,7 @@ public class MealController {
             "<br>(1): 정상)")
     public List<MealSelVo> getMealList(@RequestParam(required = false, defaultValue = "1") int page,
                                        @RequestParam(name = "row_count", required = false,
-                                               defaultValue = "4") int rowCount,
+                                               defaultValue = "8") int rowCount,
                                        @RequestParam(required = false, defaultValue = "0") int bookmark,
                                        @RequestParam(required = false) String search) {
         try{
