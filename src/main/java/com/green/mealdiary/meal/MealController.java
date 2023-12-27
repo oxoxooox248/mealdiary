@@ -51,8 +51,7 @@ public class MealController {
     @Operation(summary = "일지 수정", description = "일지 수정 처리" +
             "<br>일지의 상세 정보들을 보내주시되 변경된 부분이 있으면 그 부분만 변경해서 보내주세요" +
             "<br>imeal: 일지pk, title: 제목(음식 이름), ingredient: 재료, recipe: 레시피, review: 후기" +
-            "<br>picIdx: 사진 인덱스번호(List), pics: 바꾸고 싶은 사진(List)," +
-            "<br>tagIdx: 태그 인덱스번호(List), tags: 바꾸고 싶은 태그(List)" +
+            "<br>pics: 바꾸고 싶은 사진(List), tags: 바꾸고 싶은 태그(List)" +
             "<br>(result(-1): Bad Request, (0): 실패, (1): 성공)")
     public ResVo putMeal(@RequestBody @Nullable MealUpdDto dto) {
         try{

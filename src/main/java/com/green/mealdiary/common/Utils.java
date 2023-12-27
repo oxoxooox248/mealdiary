@@ -89,49 +89,7 @@ public class Utils {
         return false;
     }
 
-    //사진 인덱스 리스트 확인
-    public static boolean picIdxCheck(List<Integer> picIdx) {
-        if (picIdx.size() > Const.PIC_MAX || picIdx.isEmpty()) {
-            return true;
-        }//사진 인덱스 리스트 크기가 사진 갯수 초과 혹은 0이면 true
-        for (Integer idx : picIdx) {
-            if (idx < Const.PIC_IDX_MIN || idx > Const.PIC_IDX_MAX) {
-                return true;
-            }
-        }//사진 인덱스가 0미만 2초과면 true
-        switch (picIdx.size()) {
-            case 1:
-                break;//사진이 1개 일 때
-            case 2:
-                if (picIdx.get(0).equals(picIdx.get(1))) {
-                    return true;
-                }//사진이 2개 일 때: 인덱스가 같으면 true
-                break;
-            case 3:
-                if (picIdx.get(0).equals(picIdx.get(1))
-                        || picIdx.get(1).equals(picIdx.get(2))
-                        || picIdx.get(0).equals(picIdx.get(2))) {
-                    return true;
-                }//사진이 3개 일 때: 인덱스가 같으면 true
-                break;
-        }//사진 인덱스가 중복이면 true
-        return false;//정상이면 false
-    }
 
-    //태그 인덱스 리스트 확인
-    public static boolean tagIdxCheck(List<Integer> tagIdx) {
-        if (tagIdx.size() > Const.TAG_MAX) {
-            return true;
-        }//태그 인덱스 리스트 갯수가 5 초과
-        for (int i = 0; i < tagIdx.size() - 1; i++) {
-            for (int z = i + 1; z < tagIdx.size(); z++) {
-                if (tagIdx.get(i).equals(tagIdx.get(z))) {
-                    return true;//태그 인덱스가 중복이면 true
-                }
-            }
-        }
-        return false;//정상이면 false
-    }
     //일지 수정 요청 확인
     public static ResVo putMealCheck(@Nullable MealUpdDto dto) {
         if (dto == null) {
@@ -140,30 +98,24 @@ public class Utils {
         } else if (dto.getTitle() == null
                 || dto.getIngredient() == null
                 || dto.getRecipe() == null
-                || dto.getPicIdx() == null
                 || dto.getPics() == null) {
             return new ResVo(Const.BAD_REQUEST);
-            //제목, 재료, 레시피, 사진 인덱스, 사진이 null이면
+            //제목, 재료, 레시피, 사진이 null이면
         } else if (Utils.isEmpty(dto.getTitle())
                 || Utils.isEmpty(dto.getIngredient())
                 || Utils.isEmpty(dto.getRecipe())
-                || dto.getPicIdx().isEmpty()
                 || dto.getPics().isEmpty()
-                || Utils.picListCheck(dto.getPics())) {
+                || Utils.picListCheck(dto.getPics())
+                ||dto.getPics().size()>Const.PIC_MAX) {
             return new ResVo(Const.BAD_REQUEST);
             //제목, 재료, 레시피는 반드시 입력 받아야 한다
-        } else if (Utils.picIdxCheck(dto.getPicIdx())) {
-            //사진 인덱스 리스트가 정상적이지 않을 때 true
-            return new ResVo(Const.BAD_REQUEST);
-        } else if (!(dto.getTagIdx() == null)
-                && !(dto.getTags() == null)) {
-            //태그가 있을 때 tag와 tagidx체크
-            if (dto.getTagIdx().isEmpty() || dto.getTags().isEmpty()) {
-                //사이즈가 0이거나
+        } else if (!(dto.getTags() == null)) {
+            //태그가 있을 때
+            if (dto.getTags().isEmpty() || dto.getTags().size()>Const.TAG_MAX) {
+                //사이즈가 0이거나 5 초과
                 return new ResVo(Const.BAD_REQUEST);
-            } else if (Utils.tagIdxCheck(dto.getTagIdx())
-                    || Utils.tagListCheck(dto.getTags())) {
-                //비정상적인 태그 인덱스 리스트와 태그 리스트
+            } else if (Utils.tagListCheck(dto.getTags())) {
+                //비정상적인 태그 리스트
                 return new ResVo(Const.BAD_REQUEST);
             }
         }

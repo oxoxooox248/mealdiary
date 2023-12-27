@@ -71,15 +71,13 @@ public class MealService {
         }
         MealInsDto iDto= new MealInsDto();
         iDto.setImeal(dto.getImeal());
-        if (dto.getPics() != null && !dto.getPics().isEmpty()) {
-            iDto.setPics(dto.getPics());
-            int affectedDelPic= mapper.delMealPicByImeal(dto.getImeal());
-            int affectedInsPic= mapper.insMealPics(iDto);
-        }
+        iDto.setPics(dto.getPics());
+        int affectedDelPic= mapper.delMealPicByImeal(dto.getImeal());
+        int affectedInsPic= mapper.insMealPics(iDto);
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
             iDto.setTags(dto.getTags());
-            int affectedDelTag= mapper.delMealPicByImeal(dto.getImeal());
-            int affectedInsTag= mapper.insMealPics(iDto);
+            int affectedDelTag= mapper.delMealTagByImeal(dto.getImeal());
+            int affectedInsTag= mapper.insMealTags(iDto);
         }
         return new ResVo(Const.SUCCESS);
     }
