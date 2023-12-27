@@ -106,12 +106,12 @@ public class Utils {
                 || Utils.isEmpty(dto.getRecipe())
                 || dto.getPics().isEmpty()
                 || Utils.picListCheck(dto.getPics())
-                ||dto.getPics().size()>Const.PIC_MAX) {
+                || dto.getPics().size()>Const.PIC_MAX) {
             return new ResVo(Const.BAD_REQUEST);
             //제목, 재료, 레시피는 반드시 입력 받아야 한다
         } else if (!(dto.getTags() == null)) {
             //태그가 있을 때
-            if (dto.getTags().isEmpty() || dto.getTags().size()>Const.TAG_MAX) {
+            if (dto.getTags().size()>Const.TAG_MAX) {
                 //사이즈가 0이거나 5 초과
                 return new ResVo(Const.BAD_REQUEST);
             } else if (Utils.tagListCheck(dto.getTags())) {

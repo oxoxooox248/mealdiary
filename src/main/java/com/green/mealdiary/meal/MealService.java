@@ -74,9 +74,9 @@ public class MealService {
         iDto.setPics(dto.getPics());
         int affectedDelPic= mapper.delMealPicByImeal(dto.getImeal());
         int affectedInsPic= mapper.insMealPics(iDto);
+        int affectedDelTag= mapper.delMealTagByImeal(dto.getImeal());
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
             iDto.setTags(dto.getTags());
-            int affectedDelTag= mapper.delMealTagByImeal(dto.getImeal());
             int affectedInsTag= mapper.insMealTags(iDto);
         }
         return new ResVo(Const.SUCCESS);
