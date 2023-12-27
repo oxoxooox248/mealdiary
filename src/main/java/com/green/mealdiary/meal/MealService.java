@@ -66,18 +66,24 @@ public class MealService {
 
         int affectedRow = mapper.updMeal(dto);
 
-        if (affectedRow == Const.ZERO) {
-            return new ResVo(Const.ZERO);
-        }
         MealInsDto iDto= new MealInsDto();
         iDto.setImeal(dto.getImeal());
         iDto.setPics(dto.getPics());
         int affectedDelPic= mapper.delMealPicByImeal(dto.getImeal());
+        if(affectedDelPic<Const.PIC_MIN){
+            return new ResVo(Const.ZERO);
+        }
         int affectedInsPic= mapper.insMealPics(iDto);
+        if(affectedInsPic!=dto.getPics().size()){
+            return new ResVo(Const.ZERO);
+        }
         int affectedDelTag= mapper.delMealTagByImeal(dto.getImeal());
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
             iDto.setTags(dto.getTags());
             int affectedInsTag= mapper.insMealTags(iDto);
+            if(affectedInsTag!=dto.getTags().size()){
+                return new ResVo(Const.ZERO);
+            }
         }
         return new ResVo(Const.SUCCESS);
     }
