@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.70f34461.css",
+    "main.js": "/static/js/main.004932e9.js",
+    "static/media/KingSejongInstitute-Bold.ttf": "/static/media/KingSejongInstitute-Bold.4c069e57c40612f630af.ttf",
+    "static/media/KingSejongInstitute-Regular.ttf": "/static/media/KingSejongInstitute-Regular.293b9cc1b88c2892466a.ttf",
+    "index.html": "/index.html",
+    "main.70f34461.css.map": "/static/css/main.70f34461.css.map",
+    "main.004932e9.js.map": "/static/js/main.004932e9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.70f34461.css",
+    "static/js/main.004932e9.js"
+  ]
+}

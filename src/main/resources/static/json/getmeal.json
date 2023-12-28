@@ -1,0 +1,224 @@
+[
+  {
+    "imeal": 1,
+    "title": "햄버거",
+    "review": "string",
+    "createdAt": "2023-12-18 15:22:36",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["햄버거", "상추", "빵"],
+    "result": 1
+  },
+  {
+    "imeal": 2,
+    "title": "김치",
+    "review": "쉽고 맛있었다.",
+    "createdAt": "2023-12-18 15:10:03",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["갓김치", "수육", "배추"],
+    "result": 1
+  },
+  {
+    "imeal": 3,
+    "title": "돼지국밥",
+    "review": "쉽고 맛있었다.",
+    "createdAt": "2023-12-18 15:07:44",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["야식"],
+    "result": 1
+  },
+  {
+    "imeal": 4,
+    "title": "사탕",
+    "review": "쉽고 맛있었다.",
+    "createdAt": "2023-12-18 15:00:29",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["청포도"],
+    "result": 1
+  },
+  {
+    "imeal": 5,
+    "title": "칼국수",
+    "review": "strin g!!!@@@",
+    "createdAt": "2023-12-15 14:32:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["닭칼국수", "바지락칼국수"],
+    "result": 1
+  },
+  {
+    "imeal": 6,
+    "title": "도시락",
+    "review": "string!!!@@@",
+    "createdAt": "2023-12-15 14:30:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["편의점"],
+    "result": 1
+  },
+  {
+    "imeal": 7,
+    "title": "떡볶이",
+    "review": "string!!!",
+    "createdAt": "2023-12-15 14:30:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["맛있다", "떡", "순대"],
+    "result": 1
+  },
+  {
+    "imeal": 8,
+    "title": "햄버거",
+    "review": "맛있게 먹었다. 강추",
+    "createdAt": "2023-12-15 12:08:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["햄버거", "상추", "빵"],
+    "result": 1
+  },
+  {
+    "imeal": 9,
+    "title": "김치볶음밥",
+    "review": "맛있게 먹었다. 강추",
+    "createdAt": "2023-12-15 12:08:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["햄", "김치볶음밥"],
+    "result": 1
+  },
+  {
+    "imeal": 10,
+    "title": "치킨",
+    "review": "맛있게 먹었다. 강추",
+    "createdAt": "2023-12-15 09:58:00",
+    "pics": [
+      "https://dimg.donga.com/wps/NEWS/IMAGE/2022/01/02/111057059.1.jpg"
+    ],
+    "tags": ["양념치킨", "닭", "슈프림치킨"],
+    "result": 1
+  },
+  {
+    "imeal": 11,
+    "title": "햄버거",
+    "review": "string",
+    "createdAt": "2023-12-18 15:22:36",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["햄버거", "상추", "빵"],
+    "result": 1
+  },
+  {
+    "imeal": 12,
+    "title": "김치",
+    "review": "쉽고 맛있었다.",
+    "createdAt": "2023-12-18 15:10:03",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["갓김치", "수육", "배추"],
+    "result": 1
+  },
+  {
+    "imeal": 13,
+    "title": "돼지국밥",
+    "review": "쉽고 맛있었다.",
+    "createdAt": "2023-12-18 15:07:44",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["야식"],
+    "result": 1
+  },
+  {
+    "imeal": 14,
+    "title": "사탕",
+    "review": "쉽고 맛있었다.",
+    "createdAt": "2023-12-18 15:00:29",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["청포도"],
+    "result": 1
+  },
+  {
+    "imeal": 15,
+    "title": "칼국수",
+    "review": "strin g!!!@@@",
+    "createdAt": "2023-12-15 14:32:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["닭칼국수", "바지락칼국수"],
+    "result": 1
+  },
+  {
+    "imeal": 16,
+    "title": "도시락",
+    "review": "string!!!@@@",
+    "createdAt": "2023-12-15 14:30:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["편의점"],
+    "result": 1
+  },
+  {
+    "imeal": 17,
+    "title": "떡볶이",
+    "review": "string!!!",
+    "createdAt": "2023-12-15 14:30:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png",
+      "https://dimg.donga.com/wps/NEWS/IMAGE/2022/01/02/111057059.1.jpg",
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["맛있다", "떡", "순대"],
+    "result": 1
+  },
+  {
+    "imeal": 18,
+    "title": "햄버거",
+    "review": "맛있게 먹었다. 강추",
+    "createdAt": "2023-12-15 12:08:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["햄버거", "상추", "빵"],
+    "result": 1
+  },
+  {
+    "imeal": 19,
+    "title": "김치볶음밥",
+    "review": "맛있게 먹었다. 강추",
+    "createdAt": "2023-12-15 12:08:00",
+    "pics": [
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2021/04/29/62a1cda6-ec70-44a8-811c-fbc6300a18ed.png"
+    ],
+    "tags": ["햄", "김치볶음밥"],
+    "result": 1
+  },
+  {
+    "imeal": 20,
+    "title": "치킨",
+    "review": "맛있게 먹었다. 강추",
+    "createdAt": "2023-12-15 09:58:00",
+    "pics": [
+      "https://dimg.donga.com/wps/NEWS/IMAGE/2022/01/02/111057059.1.jpg"
+    ],
+    "tags": ["양념치킨", "닭", "슈프림치킨"],
+    "result": 1
+  }
+]
