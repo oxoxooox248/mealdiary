@@ -140,42 +140,6 @@
     </delete>
 
 
-    <!--일지 태그 추가-->
-    <insert id="insMealTag">
-        INSERT INTO
-        t_meal_tag
-        SET
-            imeal= #{imeal},
-            tag= #{tag}
-    </insert>
-
-
-    <!--일지 태그 삭제-->
-    <delete id="delMealTag">
-        DELETE
-        FROM t_meal_tag
-        WHERE itag= #{itag}
-    </delete>
-
-
-    <!--일지 사진 추가-->
-    <insert id="insMealPic">
-        INSERT INTO
-        t_meal_pic
-        SET
-            imeal= #{imeal},
-            pic= #{pic}
-    </insert>
-
-
-    <!--일지 사진 삭제-->
-    <delete id="delMealPic">
-        DELETE
-        FROM t_meal_pic
-        WHERE ipic= #{ipic}
-    </delete>
-
-
     <!--북마크 온오프-->
     <update id="toggleBookmark">
         <selectKey resultType="int" keyProperty="bookmark" order="BEFORE">

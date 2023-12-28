@@ -147,45 +147,6 @@ public class MealService {
         //해당 일지 삭제(0: 실행 안됨, 1: 실행 완료)
     }
 
-    //일지 태그 추가
-    public ResVo postMealTag(MealTagInsDto dto) {
-        Integer targetImeal = mapper.selMealByImeal(dto.getImeal());
-        //해당 일지가 있는지 확인
-        if (targetImeal == null) {
-            return new ResVo(Const.NO_EXIST);//없으면 바로 리턴
-        } else if (mapper.selMealTags(dto.getImeal()).size() >= Const.TAG_MAX) {
-            return new ResVo(Const.BAD_REQUEST);
-        }//해당 일지의 태그가 최대 갯수(5)만큼 있을 경우 추가 불가
-
-        return new ResVo(mapper.insMealTag(dto));//태그 추가 실행
-    }
-
-    //일지 태그 삭제
-    public ResVo delMealTag(int itag) {
-        return new ResVo(mapper.delMealTag(itag));
-    }
-
-    //일지 사진 추가
-    public ResVo postMealPic(MealPicInsDto dto) {
-        Integer targetImeal = mapper.selMealByImeal(dto.getImeal());//해당 일지가 있는지 확인
-        if (targetImeal == null) {//해당 일지가 존재하지 않을 때
-            return new ResVo(Const.NO_EXIST);
-
-        } else if (mapper.selMealPics(dto.getImeal()).size() >= Const.PIC_MAX) {
-            //해당 일지의 사진이 최대 갯수(3)만큼 있을 경우 추가 불가
-            return new ResVo(Const.BAD_REQUEST);
-        }
-        return new ResVo(mapper.insMealPic(dto));//사진 추가 실행
-    }
-
-    //일지 사진 삭제
-    public ResVo delMealPic(MealPicDelDto dto) {
-        if (mapper.selMealPics(dto.getImeal()).size() <= Const.PIC_MIN) {
-            return new ResVo(Const.FAIL);
-        }
-        //해당 일지가 존재하지 않거나 사진이 최소 갯수(1)만큼 있을 경우 삭제 불가
-        return new ResVo(mapper.delMealPic(dto.getIpic()));//사진 삭제 실행
-    }
 
     //북마크 온오프
     public ResVo toggleBookmark(int imeal) {

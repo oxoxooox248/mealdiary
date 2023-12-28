@@ -28,17 +28,6 @@ public interface MealMapper {
     int delMealTagByImeal(int imeal);
     int delMeal(int imeal);
 
-    //일지 태그 추가
-    int insMealTag(MealTagInsDto dto);
-
-    //일지 태그 삭제
-    int delMealTag(int itag);
-
-    //일지 사진 추가
-    int insMealPic(MealPicInsDto dto);
-
-    //일지 사진 삭제
-    int delMealPic(int ipic);
 
     //북마크 온오프
     int toggleBookmark(MealBookmarkDto dto);
